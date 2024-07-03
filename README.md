@@ -1,9 +1,12 @@
 # Igor 
 
-![igor](igor_logo.jpg)
+![igor](./img/igor.jpg)
+
 "Yeth, mathtur...!"
 
 ## Description 
+
+![igor](./img/igor_logo.jpg)
 
 An automated AWS Caretaker, Igor does thy bidding by blowing the candles out at night and lighting the fires in the morning. He produces all the necessary ~~shavings~~ er, savings on costs...
 
