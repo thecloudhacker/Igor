@@ -4,11 +4,6 @@
 
 Automated AWS Caretaker
 
-•      
-┓┏┓┏┓┏┓
-┗┗┫┗┛┛ 
-  ┛    
-
 ---
 
 ## Operation
