@@ -1,6 +1,6 @@
 # Igor 
 
-![igor](./img/igor.jpg)
+![igor](./img/igorLarge.png)
 
 "Yeth, mathtur...!"
 
