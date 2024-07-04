@@ -2,13 +2,15 @@
 
 ![igor](./img/igorLarge.png)
 
-"Yeth, mathtur...!"
+"Yeth, mathtur...! What ith thy bidding?"
 
 ## Description 
 
 ![igor](./img/igor_logo.jpg)
 
 An automated AWS Caretaker, Igor does thy bidding by blowing the candles out at night and lighting the fires in the morning. He produces all the necessary ~~shavings~~ er, savings on costs...
+
+With a mixture of front-end web interface and back-end comms scripts, Igor is able to keep a watch on your AWS estate and turn off the electric generators if calculatory activities are not requried.
 
 ---
 
@@ -28,6 +30,39 @@ An automated AWS Caretaker, Igor does thy bidding by blowing the candles out at 
 ## Instructions
 
 **Igor, how in the name of Frankenstein do you work?**
+
+### Configuring AWS connection
+
+1. Create an IAM user for Igor and provide CLI access only.
+2. Specify Permissions:
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AutoStartStopPermissions",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeInstances",
+                "ec2:StartInstances",
+                "ec2:StopInstances"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+3. Add CLI keys to Igor's settings
+
+
+### Setting up Schedules
+
+### Adding instances to schedule groups
+
+### Enabling automation
+
+### Manual Control
+
 
 
 ---
