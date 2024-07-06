@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static',filename='img/igor_32_anim.gif') }}">
+    <style>
+        @font-face {
+            font-family: 'Jacquard';
+                src: url("{{ url_for('static',filename='fonts/Jacquard12-Regular.ttf') }}")  format('truetype')
+        }
+        @font-face {
+            font-family: 'Amatic Regular';
+                src: url("{{ url_for('static',filename='fonts/AmaticSC-Regular.ttf') }}")  format('truetype')
+        }
+        @font-face {
+            font-family: 'Amatic Bold';
+                src: url("{{ url_for('static',filename='fonts/AmaticSC-Bold.ttf') }}")  format('truetype')
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/igor.css') }}" />
+    <title>Igor | The AWS Caretaker | Authenticate</title>
+</head>
+<body>
+    <div class="contentBox">
+        <h1>Igor</h1>
+        <p>
+            Halt! Approach and be recognised...
+        </p>
+        <form name="authenticate" action="/login" method="post">
+            <p>
+            <table>
+                <tr>
+                    <td rowspan="4"><img src="{{ url_for('static',filename='img/igor_128_anim.gif') }}" alt="Igor" title="Yeth, Mathtur...?" /></td>
+                </tr>
+                <tr>
+                    <td>Username: </td>
+                    <td><input type="text" name="username" /></td>
+                </tr>
+                <tr>
+                    <td>Password: </td>
+                    <td><input type="password" name="password" /></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><center><input type="submit" value="Log In" /></center></td>
+                </tr>
+            </table>
+            </p>    
+        </form>
+    </div>
+    <div class="footer">
+        &copy; 2024 TheCloudHacker || Licensed under GNU GPL v2
+    </div>
+</body>
+</html>

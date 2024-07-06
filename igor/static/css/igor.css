@@ -1,0 +1,112 @@
+/*
+* Igor
+* CSS Primary Style
+*/
+
+body{
+    background-color: #3c3c3c;
+    color: #cfcfcf;
+}
+.menuBox{
+    width: 100%;
+    height: 40px;
+    display: block;
+    border-bottom: 5px solid #999933;
+}
+.menuBox ol{
+    text-decoration: none;
+    display: block;
+    width: 100%;
+}
+.menuBox li{
+    text-indent: 0;
+    display: block;
+    float: left;
+    margin-right: 10px;
+    padding: 4px;
+}
+.menuBox a{
+    display: block;
+    padding: 4px;
+    background-color: #999933;
+    text-decoration: none;
+    color: #3c3c3c;
+    font-family: 'Amatic Bold';
+    font-weight: 600;
+}
+.menuBox a:visited{
+    display: block;
+    padding: 4px;
+    background-color: #999933;
+    text-decoration: none;
+    color: #3c3c3c;
+    font-family: 'Amatic Bold';
+    font-weight: 600;
+}
+.menuBox a:hover{
+    display: block;
+    padding: 4px;
+    background-color: #482308;
+    text-decoration: none;
+    color: #999933;
+    font-family: 'Amatic Bold';
+    font-weight: 600;
+}
+
+.contentBox{
+    padding: 20px 80px 20px 80px;
+    font-family: 'Amatic Regular';
+    font-weight: 400;
+    font-size: 1.2em;
+}
+.contentBox h1{
+    font-family: 'Jacquard';
+    font-size: 3em;
+}
+.contentBox table{
+    border: 2px solid #999999;
+    border-radius: 14px;
+    padding: 10px; 
+}
+.contentBox tr:hover{
+    background-color: #482308;
+    color: #999933;
+}
+.contentBox input{
+    background-color: #3c3c3c;
+    color: #cfcfcf;
+    border: 2px solid #999999;
+    border-radius: 10px;
+    padding: 2px 10px 2px 10px
+}
+
+.headerRow{
+    background-color: #999933;
+    color: #333333;
+    padding: 0px 0px 2px 0px;
+}
+
+.button{
+    display: block;
+    margin: 15px;
+    border: 1px solid #999933;
+    border-radius: 15px;
+    background-color: #999933;
+    color:#482308;
+    width: 150px;
+    text-align: center;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.footer{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: block;
+    height: 50px;
+    width: 100%;
+    text-align: center;
+    font-family: 'Amatic Bold';
+    font-weight: 400;
+}

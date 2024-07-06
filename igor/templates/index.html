@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static',filename='img/igor_32_anim.gif') }}">
+    <style>
+        @font-face {
+            font-family: 'Jacquard';
+                src: url("{{ url_for('static',filename='fonts/Jacquard12-Regular.ttf') }}")  format('truetype')
+        }
+        @font-face {
+            font-family: 'Amatic Regular';
+                src: url("{{ url_for('static',filename='fonts/AmaticSC-Regular.ttf') }}")  format('truetype')
+        }
+        @font-face {
+            font-family: 'Amatic Bold';
+                src: url("{{ url_for('static',filename='fonts/AmaticSC-Bold.ttf') }}")  format('truetype')
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/igor.css') }}" />
+    <title>Igor | The AWS Caretaker</title>
+</head>
+<body>
+    <div class="menuBox">
+        <ol>
+            <li><a href="/schedule">Schedules</a></li>
+            <li><a href="/groups">Groups</a></li>
+            <li><a href="/reports">Reports</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ol>
+    </div>
+    <div class="contentBox">
+        <h1><img src="{{ url_for('static',filename='img/igor_32_anim.gif') }}" alt="Igor" title="Yeth, Mathtur...?" /> Igor</h1>
+        <h2>EC2 instances</h2>
+        <p>
+            <table class="igorTable">
+                <tr class="headerRow">
+                    <th>Instance ID</th>
+                    <th>Description</th>
+                    <th>Group</th>
+                    <th>Schedule</th>
+                    <th>State</th>
+                    <th>Control</th>
+                </tr>
+                
+            </table>
+        </p>
+    </div>
+    <div class="footer">
+        &copy; 2024 TheCloudHacker || Licensed under GNU GPL v2
+    </div>
+</body>
+</html>

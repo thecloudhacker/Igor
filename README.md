@@ -1,12 +1,12 @@
 # Igor 
 
-![igor](./img/igorLarge.png)
+![igor](./igor/templates/img/igorLarge.png)
 
 "Yeth, mathtur...! What ith thy bidding?"
 
 ## Description 
 
-![igor](./img/igor_logo.jpg)
+![igor](./igor/templates/img/igor_logo.jpg)
 
 An automated AWS Caretaker, Igor does thy bidding by blowing the candles out at night and lighting the fires in the morning. He produces all the necessary ~~shavings~~ er, savings on costs...
 
@@ -23,6 +23,33 @@ With a mixture of front-end web interface and back-end comms scripts, Igor is ab
 ## Deployment
 
 **Igor, go forth and replicate thyself!**
+
+Igor is designed to be deployed in your own environment, be that your residential castle, your industrial complex or on the Ether. 
+
+### Development machine
+Igor utilises Python and Flask to operate. Installation requirements for pip are stored in the requirements.txt file. To install those run: 
+
+`pip install -r requirements.txt`
+
+If you change and add to any of the libraries, be sure to add those to the requirements.txt file or run:
+
+`pip freee > requirements.txt`
+
+Rebuilding the Docker image:
+
+`docker image build -t igor_docker .`
+
+Run the Docker container:
+
+`docker run -p 5000:5000 -d igor_docker`
+
+### Deployment of service
+
+Igor can be deloyed locally for development testing or to dedicated resource.
+
+Docker Launch:
+
+`docker run igor`
 
 ---
 
@@ -57,13 +84,19 @@ With a mixture of front-end web interface and back-end comms scripts, Igor is ab
 
 ### Setting up Schedules
 
+Schedules must be generated first in order to set times for turning systems on/off.
+
 ### Adding instances to schedule groups
+
+Once you have generated schedules, you can generate groups of instances 
 
 ### Enabling automation
 
+Once you have groups of instanes assigned to schedules, you can turn the automation on or off using the web interface.
+
 ### Manual Control
 
-
+You can manually operate tasks on a group by selecting the group and using the context menu to underake your operation.
 
 ---
 
