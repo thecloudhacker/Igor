@@ -1,12 +1,12 @@
 # Igor 
 
-![igor](./igor/static/img/igor_128_anim.png)
+![igor](./igor/static/img/igor_128_anim.gif)
 
 "Yeth, mathtur...! What ith thy bidding?"
 
 ## Description 
 
-![igor](./igor/static/img/igor_32_anim.jpg) An automated AWS Caretaker, Igor does thy bidding by blowing the candles out at night and lighting the fires in the morning. He produces all the necessary ~~shavings~~ er, savings on costs...
+![igor](./igor/static/img/igor_32_anim.gif) An automated AWS Caretaker, Igor does thy bidding by blowing the candles out at night and lighting the fires in the morning. He produces all the necessary ~~shavings~~ er, savings on costs...
 
 With a mixture of front-end web interface and back-end comms scripts, Igor is able to keep a watch on your AWS estate and turn off the electric generators if calculatory activities are not requried.
 
