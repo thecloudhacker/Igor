@@ -5,6 +5,7 @@ import os
 app = Flask(__name__)
 
 # Set secret key for sessions
+# This should be changed to a different item for each deployment
 app.secret_key = b'8wefhsdfSELFWLi4fsefhbsd'
 
 # Primary Route
@@ -48,6 +49,8 @@ def show_schedules():
 
 # Display Specific Schedule
 
+
+
 # Display Processing Groups
 @app.route('/groups')
 def show_groups():
@@ -56,17 +59,17 @@ def show_groups():
         return render_template('groups.html')
     else:
         return render_template('auth.html')
-    
-    
 
 # Display specific processing group
 
-# Failure to load that page
+
+
+# Failure to load that page - throw a 404
 @app.errorhandler(404)
 def not_found(error):
     return render_template('error.html'), 404
 
-
+# Run the main system on port 5000
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=True, host='0.0.0.0', port=port)

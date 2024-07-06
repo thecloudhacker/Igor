@@ -16,4 +16,7 @@ COPY . /app
 # configure the container to run in an executed manner
 ENTRYPOINT [ "python" ]
 
+# set crontab for backend services
+
+# launch the app
 CMD ["app.py" ]

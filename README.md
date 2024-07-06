@@ -22,7 +22,7 @@ With a mixture of front-end web interface and back-end comms scripts, Igor is ab
 
 **Igor, go forth and replicate thyself!**
 
-Igor is designed to be deployed in your own environment, be that your residential castle, your industrial complex or on the Ether. 
+Igor is designed to be deployed in your own environment, be that your residential castle, your industrial complex or on the Planet-Wide Ether. 
 
 ### Development machine
 Igor utilises Python and Flask to operate. Installation requirements for pip are stored in the requirements.txt file. To install those run: 
@@ -95,6 +95,11 @@ Once you have groups of instanes assigned to schedules, you can turn the automat
 ### Manual Control
 
 You can manually operate tasks on a group by selecting the group and using the context menu to underake your operation.
+
+---
+
+## System Manuals
+Information on how to run, deploy and develop Igor can be found in the [Manuals Section](./manuals/README.md) of the codebase. You can browse this here or by cloning the repository and viewing locally.
 
 ---
 
