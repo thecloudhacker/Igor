@@ -24,15 +24,20 @@
 <body>
     <div class="menuBox">
         <ol>
+            <li><a href="/"><div class="selected">Home</div></a></li>
             <li><a href="/schedule">Schedules</a></li>
             <li><a href="/groups">Groups</a></li>
             <li><a href="/reports">Reports</a></li>
+            <li><a href="/settings">Settings</a></li>
             <li><a href="/logout">Logout</a></li>
         </ol>
     </div>
     <div class="contentBox">
         <h1><img src="{{ url_for('static',filename='img/igor_32_anim.gif') }}" alt="Igor" title="Yeth, Mathtur...?" /> Igor</h1>
         <h2>EC2 instances</h2>
+        <p>
+            All instances I know about through their autostartstop tag:
+        </p>
         <p>
             <table class="igorTable">
                 <tr class="headerRow">
@@ -43,7 +48,9 @@
                     <th>State</th>
                     <th>Control</th>
                 </tr>
-                
+                {% autoescape false %}
+                {{ mainTable }}
+                {% endautoescape %}
             </table>
         </p>
     </div>

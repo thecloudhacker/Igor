@@ -33,6 +33,16 @@ If you change and add to any of the libraries, be sure to add those to the requi
 
 `pip freee > requirements.txt`
 
+Initialise and run the virtual environment:
+
+`python3 -m venv .venv`
+
+`. .venv/bin/activate`
+
+Run the application from the igor directory:
+
+`python3 app.py`
+
 Rebuilding the Docker image:
 
 `docker image build -t igor_docker .`

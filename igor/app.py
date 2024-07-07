@@ -1,6 +1,16 @@
 from flask import Flask, render_template, session, request, redirect, url_for, make_response
 from markupsafe import escape
 import os
+import boto3
+import configparser
+
+# Load AWS Config from the file system settings
+config = configparser.RawConfigParser()
+config.readfp(open(r".awsconfig"))
+AWS_ACCOUNT_ID=config.get('AWS', 'AWS_ACCOUNT_ID')
+AWS_REGION=config.get('AWS', 'AWS_REGION')
+AWS_KEY=config.get('AWS', 'AWS_KEY')
+AWS_SECRET=config.get('AWS', 'AWS_SECRET')
 
 app = Flask(__name__)
 
@@ -12,10 +22,35 @@ app.secret_key = b'8wefhsdfSELFWLi4fsefhbsd'
 @app.route('/')
 def index():
     if 'username' in session:
-        return render_template('index.html')
+        # Get EC2 instances in fleet
+        client = boto3.client('ec2', aws_access_key_id = AWS_KEY, aws_secret_access_key = AWS_SECRET, region_name = AWS_REGION)
+        response = client.describe_instances(
+            Filters=[
+                {
+                    'Name': 'tag:autostartstop',
+                    'Values': [
+                        '*',
+                    ],
+                }
+            ],
+        )
+        rowcode=""
+        for r in response['Reservations']:
+            for i in r['Instances']:
+                ThisInstance = i['InstanceId']
+                InstanceState = i['State']['Name']
+                for t in i['Tags']:
+                    if t['Key'] == 'Name':
+                        ThisName = t['Value']
+                    if t['Key'] == 'autostartstop':
+                        ThisTag = t['Value']
+                # Populate another row in the table
+                rowcode += "<tr><td>" + ThisInstance + "</td><td>" + ThisName + "</td><td>" + ThisTag + "</td><td></td><td>" + InstanceState + "</td><td></td></tr>"
+        return render_template('index.html', mainTable=rowcode)
     else:
         return render_template('auth.html')
 
+# AUTH ROUTE POINTS 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -31,9 +66,8 @@ def logout():
     return redirect(url_for('index'))
 
 
-
+# Home Screen
 def home():
-    # Get EC2 instances in fleet
     return render_template('index.html')
 
 # Display all Schedules
