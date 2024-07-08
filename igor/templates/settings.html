@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static',filename='img/igor_32_anim.gif') }}">
+    <style>
+        @font-face {
+            font-family: 'Jacquard';
+                src: url("{{ url_for('static',filename='fonts/Jacquard12-Regular.ttf') }}")  format('truetype')
+        }
+        @font-face {
+            font-family: 'Amatic Regular';
+                src: url("{{ url_for('static',filename='fonts/AmaticSC-Regular.ttf') }}")  format('truetype')
+        }
+        @font-face {
+            font-family: 'Amatic Bold';
+                src: url("{{ url_for('static',filename='fonts/AmaticSC-Bold.ttf') }}")  format('truetype')
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/igor.css') }}" />
+    <title>Igor | The AWS Caretaker</title>
+</head>
+<body>
+    <div class="menuBox">
+        <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/schedule">Schedules</a></li>
+            <li><a href="/groups">Groups</a></li>
+            <li><a href="/reports">Reports</a></li>
+            <li><a href="/settings"><div class="selected">Settings</div></a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ol>
+    </div>
+    <div class="contentBox">
+        <h1><img src="{{ url_for('static',filename='img/igor_32_anim.gif') }}" alt="Igor" title="Yeth, Mathtur...?" /> Igor</h1>
+        <h2>Settings</h2>
+        <form name="settings" action="/settings" method="post">
+            <p>
+                <strong>AWS Configuration</strong>
+            </p>
+            <table>
+                <tr>
+                    <td>
+                        <p>
+                            AWS Account ID<br/>
+                            <input type="text" value="{{ accountID }}" name="accountID" />
+                        </p>
+                        <p>
+                            AWS Region<br/>
+                            <input type="text" value="{{ region }}" name="region" />
+                        </p>
+                    </td>
+                    <td>
+                        <p>
+                            AWS Key<br/>
+                            <input type="text" value="{{ userkey }}" name="userkey" />
+                        </p>
+                        <p>
+                            AWS Secret<br/>
+                            <input type="text" value="{{ usersecret }}" name="usersecret" />
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><input type="submit" value="Save AWS Settings" class="button" /></td>
+                </tr>
+            </table>
+        </form>
+            <hr/>
+            <p>
+                <strong>User Configuration</strong>
+            </p>
+            <p>
+                <table>
+                    <tr class="headerRow">
+                        <th>Username</th>
+                        <th>Full Name</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    {% autoescape false %}
+                    {{ userList }}
+                    {% endautoescape %}
+                </table>
+            </p>
+        
+    </div>
+    <div class="footer">
+        &copy; 2024 TheCloudHacker || Licensed under GNU GPL v2
+    </div>
+</body>
+</html>

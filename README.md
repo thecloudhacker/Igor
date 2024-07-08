@@ -16,6 +16,11 @@ With a mixture of front-end web interface and back-end comms scripts, Igor is ab
 
 **Igor, clean up this mess!?**
 
+EC2 instances are superbly useful and necessary in many environments, however they come with the downside of being excessively costly if left running ( especially if you've opted for huge resource requirements! ). 
+
+By creating operational time zones and placing instances into groups you can start to control the power on and off activities and even set cut-off times for operation. Once you reach that time, Igor will send a signal to shut down the EC2 instances or power them back on ready for another day of work.
+
+
 ---
 
 ## Deployment
@@ -24,32 +29,38 @@ With a mixture of front-end web interface and back-end comms scripts, Igor is ab
 
 Igor is designed to be deployed in your own environment, be that your residential castle, your industrial complex or on the Planet-Wide Ether. 
 
+Information on the deployment methods can be found in the [manuals section](./manuals/README.md) of the codebase.
+
 ### Development machine
 Igor utilises Python and Flask to operate. Installation requirements for pip are stored in the requirements.txt file. To install those run: 
 
 `pip install -r requirements.txt`
 
-If you change and add to any of the libraries, be sure to add those to the requirements.txt file or run:
+If you change and add to any of the libraries, be sure to add those to the requirements.txt file or run the following to set your requirements:
 
-`pip freee > requirements.txt`
+`pip freeze > requirements.txt`
 
 Initialise and run the virtual environment:
 
-`python3 -m venv .venv`
+If no virtual environment exists:  
+```
+cd igor
+python3 -m venv .venv
+```
 
-`. .venv/bin/activate`
+Activate the environment with: `. .venv/bin/activate`
 
 Run the application from the igor directory:
 
-`python3 app.py`
+```
+cd igor
+python3 app.py
+```
 
 Rebuilding the Docker image:
 
 `docker image build -t igor_docker .`
 
-Run the Docker container:
-
-`docker run -p 5000:5000 -d igor_docker`
 
 ### Deployment of service
 
@@ -57,7 +68,7 @@ Igor can be deloyed locally for development testing or to dedicated resource.
 
 Docker Launch:
 
-`docker run igor`
+`docker run -p 5000:5000 -d igor_docker`
 
 ---
 
@@ -110,6 +121,8 @@ You can manually operate tasks on a group by selecting the group and using the c
 
 ## System Manuals
 Information on how to run, deploy and develop Igor can be found in the [Manuals Section](./manuals/README.md) of the codebase. You can browse this here or by cloning the repository and viewing locally.
+
+The Manuals provide a deeper understanding of the setup, development and operation of the system.
 
 ---
 
