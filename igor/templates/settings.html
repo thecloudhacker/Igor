@@ -58,12 +58,12 @@
                         </p>
                         <p>
                             AWS Secret<br/>
-                            <input type="text" value="{{ usersecret }}" name="usersecret" />
+                            <input type="password" value="{{ usersecret }}" name="usersecret" />
                         </p>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2"><input type="submit" value="Save AWS Settings" class="button" /></td>
+                    <td colspan="2"><input type="submit" value="Save AWS Settings" class="button" />{{ updatemsg }}</td>
                 </tr>
             </table>
         </form>
@@ -71,6 +71,7 @@
             <p>
                 <strong>User Configuration</strong>
             </p>
+            <p><a href="/users/add" class="button">Add User</a></p>
             <p>
                 <table>
                     <tr class="headerRow">
@@ -84,10 +85,9 @@
                     {% endautoescape %}
                 </table>
             </p>
-        
     </div>
     <div class="footer">
-        &copy; 2024 TheCloudHacker || Licensed under GNU GPL v2
+        &copy; 2024 TheCloudHacker || Igor, the AWS Caretaker || Licensed under GNU GPL v2
     </div>
 </body>
 </html>

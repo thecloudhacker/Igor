@@ -22,22 +22,23 @@
     <title>Igor | The AWS Caretaker</title>
 </head>
 <body>
+    <div class="menuBox">
+        <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="/schedule">Schedules</a></li>
+            <li><a href="/groups">Groups</a></li>
+            <li><a href="/reports">Reports</a></li>
+            <li><a href="/settings"><div class="selected">Settings</div></a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ol>
+    </div>
     <div class="contentBox">
-        <h1>404</h1>
-        <h2>That page doeth not exthitht, mathtur...!?</h2>
+        <h1><img src="{{ url_for('static',filename='img/igor_32_anim.gif') }}" alt="Igor" title="Yeth, Mathtur...?" /> Igor</h1>
+        <h2>Schedules</h2>
         <p>
-            <img src="{{ url_for('static',filename='img/igor_128_anim.gif') }}" alt="Igor" title="Yeth, Mathtur...?" />  <a href="/" class="button">Click to Go home</a>
+            Instance Schedules:
         </p>
-        <hr/>
-        <p>
-            I could not find the page you are looking for.<br/>
-            Did you stumble down to the cellar again? Perhaps you were trying to take a look 
-            behind the machinery and panicked, screaming at a huge hairy spider. It's best you head home 
-            before the giant rats become hungry for human brains. 
-            There is no page or accessible item with the current URL, my sincere apologies. The best I can 
-            offer you is this paragraph of text to entertain you for two minutes until your mouse hand catches 
-            up with your mind and clicks on the Go Home button...
-        </p>
+        
     </div>
     <div class="footer">
         &copy; 2024 TheCloudHacker || Igor, the AWS Caretaker || Licensed under GNU GPL v2

@@ -105,6 +105,9 @@ body{
     font-weight: 700;
     text-decoration: none;
 }
+.button:hover{
+    color: #ffffff;
+}
 
 .footer{
     position: fixed;

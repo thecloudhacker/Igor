@@ -8,8 +8,8 @@ import hashlib
 
 # Load AWS Config from the file system settings
 try:
-    config = configparser.RawConfigParser()
-    config.readfp(open(r".awsconfig"))
+    config = configparser.ConfigParser()
+    config.read_file(open(r".awsconfig"))
     AWS_ACCOUNT_ID=config.get('AWS', 'AWS_ACCOUNT_ID')
     AWS_REGION=config.get('AWS', 'AWS_REGION')
     AWS_KEY=config.get('AWS', 'AWS_KEY')
@@ -95,6 +95,7 @@ def checkAuth(username,password):
 def logout():
     # remove the username from the session if it's there
     session.pop('username', None)
+    session.pop('password', None)
     return redirect(url_for('index'))
 
 
@@ -103,8 +104,8 @@ def home():
     return render_template('index.html')
 
 # Display all Schedules
-@app.route('/schedules')
-def show_schedules():
+@app.route('/schedule')
+def show_schedule():
     # Display the current schedules
     if 'username' in session:
         # Display the current groups
@@ -114,8 +115,27 @@ def show_schedules():
     
 
 # Display Specific Schedule
+@app.route('/schedule/<scheduleid>')
+def show_specific_schedule():
+    # Display the current schedules
+    if 'username' in session:
+        # Display the current groups
+        return render_template('schedules.html')
+    else:
+        return render_template('auth.html')
+    
 
 
+# Display Reports
+@app.route('/reports')
+def show_reports():
+    # Display the current schedules
+    if 'username' in session:
+        # Display the current groups
+        return render_template('reports.html',mainTable="")
+    else:
+        return render_template('auth.html')
+    
 
 # Display Processing Groups
 @app.route('/groups')
@@ -130,15 +150,20 @@ def show_groups():
 
 
 # Display Settings
-@app.route('/settings')
+@app.route('/settings', methods=['GET', 'POST'])
 def show_settings():
     if 'username' in session:
+        updatemsg = ""
         if request.method == 'POST':
-            completeFileContents = ""
+            completeFileContents = "[AWS]\nAWS_ACCOUNT_ID = " + request.form['accountID'] + "\nAWS_REGION = " + request.form['region'] + "\nAWS_KEY = " + request.form['userkey'] + "\nAWS_SECRET = " + request.form['usersecret'] + "\n"
             # Save settings
-            f = open(".awsconfig2", "w")
-            f.write(completeFileContents)
-            f.close()
+            try:
+                f = open(".awsconfig", "w")
+                f.write(completeFileContents)
+                f.close()
+                updatemsg = "Settings Stored"
+            except: 
+                updatemsg = "Error Saving Settings"
         # Display the current settings
         # Load the user list
         userList = ""
@@ -149,9 +174,13 @@ def show_settings():
                     userList += "<tr><td>" + row['username'] + "</td><td>" + row['fullname'] + "</td><td>" + row['status'] + "</td><td><a href=\"/users/modify/" + row['username'] + "\" class=\"button\">Modify</a> <a href=\"/users/delete/" + row['username'] + "\" class=\"button\">Delete</a></td></tr>"
         except:
             userList = "<tr><td colspan=3>-No user file-</td></tr>"
-        return render_template('settings.html',accountID=AWS_ACCOUNT_ID, region=AWS_REGION, userkey=AWS_KEY, usersecret=AWS_SECRET, userList=userList)
+        return render_template('settings.html',accountID=AWS_ACCOUNT_ID, region=AWS_REGION, userkey=AWS_KEY, usersecret=AWS_SECRET, userList=userList,updatemsg=updatemsg)
     else:
         return render_template('auth.html')
+
+
+
+
 
 # Failure to load that page - throw a 404
 @app.errorhandler(404)
