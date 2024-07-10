@@ -5,6 +5,8 @@ import boto3
 import configparser
 import csv
 import hashlib
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import text
 
 # Load AWS Config from the file system settings
 try:
@@ -20,7 +22,17 @@ except:
     AWS_KEY=""
     AWS_SECRET=""
 
+# this variable, db, will be used for all SQLAlchemy commands
+db = SQLAlchemy()
+# create the app
 app = Flask(__name__)
+# change string to the name of your database; add path if necessary
+db_name = 'igor.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_name
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+# initialize the app with Flask-SQLAlchemy db
+db.init_app(app)
+
 
 # Set secret key for sessions
 # This should be changed to a different item for each deployment
@@ -72,6 +84,11 @@ def login():
     else:
         return render_template('auth.html')
 
+
+
+
+
+
 # Run authentication with local user file
 def checkAuth(username,password):
     # Hash the string to SHA1
@@ -103,6 +120,9 @@ def logout():
 def home():
     return render_template('index.html')
 
+
+
+
 # Display all Schedules
 @app.route('/schedule')
 def show_schedule():
@@ -123,7 +143,9 @@ def show_specific_schedule():
         return render_template('schedules.html')
     else:
         return render_template('auth.html')
-    
+
+
+
 
 
 # Display Reports
@@ -135,18 +157,29 @@ def show_reports():
         return render_template('reports.html',mainTable="")
     else:
         return render_template('auth.html')
-    
+
+
+
 
 # Display Processing Groups
-@app.route('/groups')
+@app.route('/groups', methods=['GET', 'POST'])
 def show_groups():
     if 'username' in session:
+        if request.method == "POST":
+            groupname = request.form['groupname']
+            groupdescription = request.form['groupdescription']
         # Display the current groups
         return render_template('groups.html')
     else:
         return render_template('auth.html')
 
 # Display specific processing group
+
+
+
+
+
+
 
 
 # Display Settings

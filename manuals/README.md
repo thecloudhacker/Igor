@@ -67,6 +67,14 @@ The settings page also provides the interface to set your AWS credentials to acc
 ## 4. Development
 If you have modifications or want to take the project further, Igor can be forked as required and further developed by your local teams. 
 
+You will require a range of packages installing for your python3 environment.
+
+- pip
+- flask
+- flask_sqlalchemy
+
+Sqlite is also used to hold certain data values ( which is bundled in Mac but will be an extra download on Windows ).
+
 ## 5. AWS Settings
 
 Your Igor installation will require some credentials to be able to access your EC2 fleet. 

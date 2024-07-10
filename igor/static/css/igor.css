@@ -124,3 +124,11 @@ body{
     font-weight: 400;
     z-index: 50;
 }
+
+.formgroup{
+    border: 1px solid #ffffff;
+    padding: 3px;
+    border-radius: 5px;
+    width: fit-content;
+    background-color: #482308;
+}

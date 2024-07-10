@@ -37,6 +37,12 @@
     <div class="contentBox">
         <h1><img src="{{ url_for('static',filename='img/igor_32_anim.gif') }}" alt="Igor" title="Yeth, Mathtur...?" /> Igor</h1>
         <h2>groups</h2>
+        <form name="addGroup" action="/groups" method="post"></form>
+            <p class="formgroup">
+                <em>Create Group:</em><br/>
+                Group Name: <input type="text" name="groupname" /> &nbsp;&nbsp;&nbsp;&nbsp; Description: <input type="text" name="groupdescription" /> &nbsp;&nbsp;&nbsp;&nbsp; <input type="submit" value="Save" />
+            </p>
+        </form>
         <p>
             <table class="igorTable">
                 <tr class="headerRow">
