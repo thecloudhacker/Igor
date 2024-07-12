@@ -28,7 +28,9 @@ db = SQLAlchemy()
 app = Flask(__name__)
 # change string to the name of your database; add path if necessary
 db_name = 'igor.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_name
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+db_path = os.path.join(BASE_DIR, db_name)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 # initialize the app with Flask-SQLAlchemy db
 db.init_app(app)
@@ -70,6 +72,9 @@ def index():
     else:
         return render_template('auth.html')
 
+
+
+
 # AUTH ROUTE POINTS 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -83,9 +88,6 @@ def login():
             return render_template('auth.html',failmessage="Authentication Failure")
     else:
         return render_template('auth.html')
-
-
-
 
 
 
@@ -164,12 +166,25 @@ def show_reports():
 # Display Processing Groups
 @app.route('/groups', methods=['GET', 'POST'])
 def show_groups():
+    processInfo = ""
+    myGroupList = ""
     if 'username' in session:
         if request.method == "POST":
             groupname = request.form['groupname']
             groupdescription = request.form['groupdescription']
+            record = groups(groupname,groupdescription)
+            db.session.add(record)
+            db.session.commit()
+            updateMessage="Added group " + groupname
         # Display the current groups
-        return render_template('groups.html')
+        try:
+            groupList = db.session.execute(db.select(groups)
+                    .order_by(groups.groupname)).scalars()
+            for item in groupList:
+                myGroupList += "<tr><td>" + item.groupname + "</td><td>" + item.groupdescription + "</td></tr>"
+        except Exception as e:
+            processInfo = str(e)
+        return render_template('groups.html',updateMessage=processInfo,groupTable=myGroupList)
     else:
         return render_template('auth.html')
 
@@ -212,6 +227,35 @@ def show_settings():
         return render_template('auth.html')
 
 
+
+################## Database Specification ##################
+
+class groups(db.Model):
+    __tablename__ = 'groups'
+    groupid = db.Column(db.Integer, primary_key=True)
+    groupname = db.Column(db.String)
+    groupdescription = db.Column(db.String)
+
+    def __init__(self,groupname,groupdescription):
+        self.groupname = groupname
+        self.groupdescription = groupdescription
+
+class instances(db.Model):
+    __tablename__ = 'instances'
+    itemid = db.Column(db.Integer, primary_key=True)
+    instanceid = db.Column(db.String)
+    groupid = db.Column(db.Integer)
+
+class schedules(db.Model):
+    __tablename__ = 'schedules'
+    scheduleid = db.Column(db.Integer, primary_key=True)
+    scheduleName = db.Column(db.String)
+    scheduleDescription = db.Column(db.String)
+    scheduleStart = db.Column(db.String)
+    scheduleEnd = db.Column(db.String)
+
+
+############################################################
 
 
 
