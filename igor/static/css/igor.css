@@ -60,13 +60,16 @@ body{
 
 .contentBox{
     padding: 20px 80px 20px 80px;
-    font-family: 'Amatic Regular';
-    font-weight: 400;
-    font-size: 1.2em;
+    font-family: 'Courier New', Courier, monospace;
 }
 .contentBox h1{
     font-family: 'Jacquard';
     font-size: 3em;
+}
+.contentBox h2{
+    font-family: 'Amatic Regular';
+    font-weight: 400;
+    font-size: 1.8em;
 }
 .contentBox table{
     border: 2px solid #999999;
@@ -74,6 +77,7 @@ body{
     padding: 10px; 
     font-family: 'Courier New', Courier, monospace;
     font-size: 0.8em;
+    min-width: 80%;
 }
 .contentBox tr:hover{
     background-color: #482308;
@@ -131,4 +135,8 @@ body{
     border-radius: 5px;
     width: fit-content;
     background-color: #482308;
+}
+
+.floatRight{
+    float: right;
 }

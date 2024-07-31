@@ -128,10 +128,18 @@ def home():
 # Display all Schedules
 @app.route('/schedule')
 def show_schedule():
+    processInfo = ""
+    myList = ""
     # Display the current schedules
     if 'username' in session:
-        # Display the current groups
-        return render_template('schedules.html')
+        try:
+            scheduleList = db.session.execute(db.select(schedules)
+                    .order_by(schedules.scheduleName)).scalars()
+            for item in scheduleList:
+                myList += "<tr><td>" + item.scheduleName + "</td><td>" + item.scheduleDescription + "</td><td>" + item.scheduleStart + "</td><td>" + item.scheduleEnd  + "</td><td></td></tr>"
+        except Exception as e:
+            processInfo = str(e)
+        return render_template('schedules.html',updateMessage=processInfo,scheduleTable=myList)
     else:
         return render_template('auth.html')
     
@@ -181,7 +189,7 @@ def show_groups():
             groupList = db.session.execute(db.select(groups)
                     .order_by(groups.groupname)).scalars()
             for item in groupList:
-                myGroupList += "<tr><td>" + item.groupname + "</td><td>" + item.groupdescription + "</td></tr>"
+                myGroupList += "<tr><td>" + item.groupname + "</td><td>" + item.groupdescription + "</td><td><a href=\"/groups/delete/" + str(item.groupid) + "\" class=\"button\">Delete</a></td></tr>"
         except Exception as e:
             processInfo = str(e)
         return render_template('groups.html',updateMessage=processInfo,groupTable=myGroupList)
@@ -190,7 +198,33 @@ def show_groups():
 
 # Display specific processing group
 
-
+# Delete specific processing group
+@app.route('/groups/delete/<groupid>', methods=['GET', 'POST'])
+def delete_group(groupid):
+    processInfo = ""
+    myGroupList = ""
+    if 'username' in session:
+        if request.method == "POST":
+            try:
+                record = groups.query.filter_by(groupid=groupid).first()
+                db.session.delete(record)
+                db.session.commit()
+                processInfo="Removed group " + request.form['groupname']
+            except Exception as e:
+                processInfo = str(e)
+        else:
+            # Display the current groups
+            try:
+                groupList = db.session.execute(db.select(groups)
+                        .filter_by(groupid=groupid)
+                        .order_by(groups.groupname)).scalars()
+                for item in groupList:
+                    myGroupList += "<tr><td><strong>" + item.groupname + "</strong><br/>" + item.groupdescription + "</td></tr><tr><td colspan=\"2\"><form action=\"/groups/delete/" + str(item.groupid) + "\" method=\"post\"><input type=\"hidden\" name=\"groupname\" value=\"" + str(item.groupname) + "\" /><input type=\"submit\" class=\"button\" value=\"Confirm\"></form></td></tr>"
+            except Exception as e:
+                processInfo = str(e)
+        return render_template('groups_delete.html',updateMessage=processInfo,groupTable=myGroupList)
+    else:
+        return render_template('auth.html')
 
 
 

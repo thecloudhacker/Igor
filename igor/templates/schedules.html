@@ -38,7 +38,20 @@
         <p>
             Instance Schedules:
         </p>
-        
+        <p>
+            <table>
+                <tr>
+                    <th>Schedule Name</th>
+                    <th>Schedule Description</th>
+                    <th>Start-up Time</th>
+                    <th>Power-down Time</th>
+                    <th>Action</th>
+                </tr>
+                {% autoescape false %}
+                {{ scheduleTable }}
+                {% endautoescape %}
+            </table>
+        </p>
     </div>
     <div class="footer">
         &copy; 2024 TheCloudHacker || Igor, the AWS Caretaker || Licensed under GNU GPL v2
