@@ -25,56 +25,23 @@
     <div class="menuBox">
         <ol>
             <li><a href="/">Home</a></li>
-            <li><a href="/schedule"><div class="selected">Schedules</div></a></li>
+            <li><a href="/schedule">Schedules</a></li>
             <li><a href="/groups">Groups</a></li>
             <li><a href="/reports">Reports</a></li>
-            <li><a href="/settings">Settings</a></li>
+            <li><a href="/settings"><div class="selected">Settings</div></a></li>
             <li><a href="/logout">Logout</a></li>
         </ol>
     </div>
-    <div class="floatRight formdiv">
-        <h2>Create Schedule:</h2>
-        <form name="addSchedule" action="/schedules" method="post">
-            <p>
-                Schedule Name:<br/>
-                <input type="text" name="schedulename" class="inputBox"/>
-            </p>
-            <p>
-                Description:<br/>
-                <textarea name="scheduledescription" cols="18" rows="4" class="inputBox"></textarea>
-            </p>
-            <p>
-                <table>
-                    <tr>
-                        <th>Start :</th>
-                        <th>End :</th>
-                    </tr>
-                    <tr>
-                        <td><input type="text" name="schedulestart" size="8" placeholder="HH:mm" maxlength="5" class="inputBox" /></td>
-                        <td><input type="text" name="scheduleend" size="8" placeholder="HH:mm" maxlength="5" class="inputBox" /></td>
-                    </tr>
-                </table>
-            </p>
-            <p>
-                <input type="submit" value="Save" class="inputBox" />
-            </p>
-        </form>
-        {{ updateMessage }}
-    </div>
     <div class="contentBox">
         <h1><img src="{{ url_for('static',filename='img/igor_32_anim.gif') }}" alt="Igor" title="Yeth, Mathtur...?" /> Igor</h1>
-        <h2>Schedules</h2>
+        <h2>Schedules : delete</h2>
         <p>
             Instance Schedules:
         </p>
         <p>
             <table>
                 <tr>
-                    <th>Schedule Name</th>
-                    <th>Schedule Description</th>
-                    <th>Start-up Time</th>
-                    <th>Power-down Time</th>
-                    <th>Action</th>
+                    <th colspan="2">Schedule</th>
                 </tr>
                 {% autoescape false %}
                 {{ scheduleTable }}

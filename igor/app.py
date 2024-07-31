@@ -40,6 +40,8 @@ db.init_app(app)
 # This should be changed to a different item for each deployment
 app.secret_key = b'8wefhsdfSELFWLi4fsefhbsd'
 
+
+##################################################### MAIN AUTH AND HOMEPAGE
 # Primary Route
 @app.route('/')
 def index():
@@ -124,7 +126,7 @@ def home():
 
 
 
-
+##################################################### SCHEDULES
 # Display all Schedules
 @app.route('/schedule')
 def show_schedule():
@@ -150,20 +152,26 @@ def show_specific_schedule():
     # Display the current schedules
     if 'username' in session:
         # Display the current groups
-        return render_template('schedules.html')
+        try:
+            scheduleList = db.session.execute(db.select(schedules)
+                    .order_by(schedules.scheduleName)).scalars()
+            for item in scheduleList:
+                scheduleInfo += "<h3>" + item.scheduleName + "</h3><strong>" + item.scheduleStart + " to " + item.scheduleEnd + "</strong><p>" + item.scheduleDescription + "<br/><a href=\"/schedules/delete/" + str(item.scheduleid) + "\" class=\"button\">Delete</a></p>"
+        except Exception as e:
+            processInfo = str(e)
+        return render_template('schedules.html',updateMessage=processInfo,groupTable=scheduleInfo)
     else:
         return render_template('auth.html')
 
 
 
 
-
+##################################################### REPORTS
 # Display Reports
 @app.route('/reports')
 def show_reports():
-    # Display the current schedules
+    # Display the current reports
     if 'username' in session:
-        # Display the current groups
         return render_template('reports.html',mainTable="")
     else:
         return render_template('auth.html')
@@ -171,6 +179,7 @@ def show_reports():
 
 
 
+##################################################### GROUPS
 # Display Processing Groups
 @app.route('/groups', methods=['GET', 'POST'])
 def show_groups():
@@ -195,8 +204,6 @@ def show_groups():
         return render_template('groups.html',updateMessage=processInfo,groupTable=myGroupList)
     else:
         return render_template('auth.html')
-
-# Display specific processing group
 
 # Delete specific processing group
 @app.route('/groups/delete/<groupid>', methods=['GET', 'POST'])
@@ -229,7 +236,7 @@ def delete_group(groupid):
 
 
 
-
+##################################################### SETTINGS
 
 # Display Settings
 @app.route('/settings', methods=['GET', 'POST'])
@@ -292,6 +299,9 @@ class schedules(db.Model):
 ############################################################
 
 
+
+
+##################################################### APP SETUP
 
 # Failure to load that page - throw a 404
 @app.errorhandler(404)

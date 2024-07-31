@@ -34,26 +34,26 @@
             </ol>
         </ol>
     </div>
+    <div class="floatRight formdiv">
+        <h2>Create Group:</h2>
+        <form name="addGroup" action="/groups" method="post">
+            <p>
+                Group Name:<br/>
+                <input type="text" name="groupname" class="inputBox" />
+            </p>
+            <p >
+                Description:<br/>
+                <input type="text" name="groupdescription" class="inputBox" />
+            </p>
+            <p">
+                <input type="submit" value="Save" class="inputBox" />
+            </p>
+        </form>
+        {{ updateMessage }}
+    </div>
     <div class="contentBox">
         <h1><img src="{{ url_for('static',filename='img/igor_32_anim.gif') }}" alt="Igor" title="Yeth, Mathtur...?" /> Igor</h1>
         <h2>groups</h2>
-        <div class="floatRight">
-            <h2>Create Group:</h2>
-            <form name="addGroup" action="/groups" method="post">
-                <p>
-                    Group Name:<br/>
-                    <input type="text" name="groupname" />
-                </p>
-                <p >
-                    Description:<br/>
-                    <input type="text" name="groupdescription" />
-                </p>
-                <p">
-                    <input type="submit" value="Save" />
-                </p>
-            </form>
-            {{ updateMessage }}
-        </div>
         <p>
             <table class="igorTable">
                 <tr class="headerRow">
