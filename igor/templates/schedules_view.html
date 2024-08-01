@@ -34,21 +34,11 @@
     </div>
     <div class="contentBox">
         <h1><img src="{{ url_for('static',filename='img/igor_32_anim.gif') }}" alt="Igor" title="Yeth, Mathtur...?" /> Igor</h1>
-        <h2>Schedules : delete</h2>
-        <p>
-            Instance Schedules:
-        </p>
-        <p>
-            <table>
-                <tr>
-                    <th colspan="2">Schedule</th>
-                </tr>
-                {% autoescape false %}
-                {{ scheduleTable }}
-                {{ updateMessage }}
-                {% endautoescape %}
-            </table>
-        </p>
+        <h2>Schedules : view</h2>
+        {% autoescape false %}
+        {{ scheduleInfo }}
+        {{ updateMessage }}
+        {% endautoescape %}
     </div>
     <div class="footer">
         &copy; 2024 TheCloudHacker || Igor, the AWS Caretaker || Licensed under GNU GPL v2
