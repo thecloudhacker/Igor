@@ -60,6 +60,14 @@ Igor is accessed through your web browser on the port you have specified ( defau
 
 The authentication screen is the first page you will be shown and will require you to enter the default credentials of *admin* and password *castle*.
 
+![Auth Screen](./img/login.jpg)
+
+Instances are placed into groups which then have schedules applied
+
+![Auth Screen](./img/groups.jpg)
+
+![Auth Screen](./img/schedules.jpg)
+
 Once you sign in you can reset your admin account password and generate more users in the settings page.
 
 The settings page also provides the interface to set your AWS credentials to access your fleet with. See section 5 on **AWS settings** for best practice - do not use an administration account! 

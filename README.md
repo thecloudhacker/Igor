@@ -8,7 +8,9 @@
 
 ![igor](./igor/static/img/igor_32_anim.gif) An automated AWS Caretaker, Igor does thy bidding by blowing the candles out at night and lighting the fires in the morning. He produces all the necessary ~~shavings~~ er, savings on costs...
 
-With a mixture of front-end web interface and back-end comms scripts, Igor is able to keep a watch on your AWS estate and turn off the electric generators if calculatory activities are not requried.
+With a mixture of front-end web interface and back-end comms scripts, Igor is able to keep a watch on your AWS estate and turn off the electric generators if calculatory activities are not requried for the evening's scientific experiments.
+
+![Groups](./manuals/img/groups.jpg)
 
 ---
 
@@ -20,6 +22,7 @@ EC2 instances are superbly useful and necessary in many environments, however th
 
 By creating operational time zones and placing instances into groups you can start to control the power on and off activities and even set cut-off times for operation. Once you reach that time, Igor will send a signal to shut down the EC2 instances or power them back on ready for another day of work.
 
+![Schedules](./manuals/img/schedules.jpg)
 
 ---
 
