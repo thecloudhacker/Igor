@@ -18,7 +18,8 @@
                 src: url("{{ url_for('static',filename='fonts/AmaticSC-Bold.ttf') }}")  format('truetype')
         }
     </style>
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/igor.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/igor.css') }}" media="screen" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/igor_print.css') }}" media="print" />
     <title>Igor | The AWS Caretaker</title>
 </head>
 <body>
@@ -36,23 +37,13 @@
         <h1><img src="{{ url_for('static',filename='img/igor_32_anim.gif') }}" alt="Igor" title="Yeth, Mathtur...?" /> Igor</h1>
         <h2>Reports</h2>
         <p>
-            Cost saving reports:
+            EC2 Instance reports:
         </p>
         <p>
-            <table class="igorTable">
-                <tr class="headerRow">
-                    <th>Instance ID</th>
-                    <th>Description</th>
-                    <th>Group</th>
-                    <th>Schedule</th>
-                    <th>Cost Per Hour</th>
-                    <th>Cost Per Day</th>
-                    <th>Saving</th>
-                </tr>
-                {% autoescape false %}
-                {{ mainTable }}
-                {% endautoescape %}
-            </table>
+            <a href="/reports/instances" class="button">All Instances</a>
+        </p>
+        <p>
+            <a href="/reports/tagged" class="button">Igor Instances</a>
         </p>
     </div>
     <div class="footer">

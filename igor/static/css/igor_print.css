@@ -1,0 +1,89 @@
+/*
+* Igor
+* CSS Primary Style
+*/
+
+body{
+    color: #000000;
+}
+.menuBox{
+    display: none;
+}
+.menuBox ol{
+    display: none;
+}
+.menuBox li{
+    display: none;
+}
+.menuBox a{
+    display: none;
+}
+.menuBox a:visited{
+    display: none;
+}
+.menuBox a:hover{
+    display: none;
+}
+.selected{
+    display: none;
+}
+
+.contentBox{
+    font-family: 'Courier New', Courier, monospace;
+}
+.contentBox h1{
+    font-family: 'Jacquard';
+    font-size: 3em;
+}
+.contentBox h2{
+    font-family: 'Amatic Regular';
+    font-weight: 400;
+    font-size: 1.8em;
+}
+.contentBox table{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.8em;
+}
+
+.contentBox input{
+    display: none;
+}
+
+.headerRow{
+    background-color: #999933;
+    color: #333333;
+    padding: 0px 0px 2px 0px;
+}
+
+.igorTable{
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.8em;
+    border: 0;
+    border-style: none;
+}
+
+.button{
+    display: none;
+}
+
+.footer{
+    border-top:  5px solid #999933;
+    text-align: center;
+    font-family: 'Amatic Bold';
+    font-weight: 400;
+}
+
+.formgroup{
+    display: none;
+}
+
+.floatRight{
+    float: right;
+}
+.formdiv{
+    display: none;
+}
+
+.inputBox{
+    display: none;
+}

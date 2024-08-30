@@ -214,7 +214,60 @@ def delete_schedule(scheduleid):
 def show_reports():
     # Display the current reports
     if 'username' in session:
-        return render_template('reports.html',mainTable="")
+        return render_template('reports.html')
+    else:
+        return render_template('auth.html')
+
+@app.route('/reports/instances')
+def show_reports_instances():
+    # Display all the instances that are in the AWS account
+    if 'username' in session:
+        client = boto3.client('ec2', aws_access_key_id = AWS_KEY, aws_secret_access_key = AWS_SECRET, region_name = AWS_REGION)
+        response = client.describe_instances()
+        tableData=""
+        for r in response['Reservations']:
+            for i in r['Instances']:
+                ThisInstance = i['InstanceId']
+                InstanceState = i['State']['Name']
+                InstanceType = i['InstanceType']
+                for t in i['Tags']:
+                    if t['Key'] == 'Name':
+                        ThisName = t['Value']
+                # Populate another row in the table
+                tableData += "<tr><td>" + ThisInstance + "</td><td>" + ThisName + "</td><td>" + InstanceType + "</td><td>" + InstanceState + "</td><td></td></tr>"
+        return render_template('reports_instances.html',mainTable=tableData)
+    else:
+        return render_template('auth.html')
+
+@app.route('/reports/tagged')
+def show_reports_tagged():
+    # Display the instances tagged with 'autostartstop'
+    if 'username' in session:
+        client = boto3.client('ec2', aws_access_key_id = AWS_KEY, aws_secret_access_key = AWS_SECRET, region_name = AWS_REGION)
+        response = client.describe_instances(
+            Filters=[
+                {
+                    'Name': 'tag:autostartstop',
+                    'Values': [
+                        '*',
+                    ],
+                }
+            ],
+        )
+        tableData=""
+        for r in response['Reservations']:
+            for i in r['Instances']:
+                ThisInstance = i['InstanceId']
+                InstanceState = i['State']['Name']
+                InstanceType = i['InstanceType']
+                for t in i['Tags']:
+                    if t['Key'] == 'Name':
+                        ThisName = t['Value']
+                    if t['Key'] == 'autostartstop':
+                        ThisTag = t['Value']
+                # Populate another row in the table
+                tableData += "<tr><td>" + ThisInstance + "</td><td>" + ThisName + "</td><td>" + InstanceType + "</td><td>" + ThisTag + "</td><td>" + InstanceState + "</td></tr>"
+        return render_template('reports_tagged.html',mainTable=tableData)
     else:
         return render_template('auth.html')
 

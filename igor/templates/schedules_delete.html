@@ -18,7 +18,8 @@
                 src: url("{{ url_for('static',filename='fonts/AmaticSC-Bold.ttf') }}")  format('truetype')
         }
     </style>
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/igor.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/igor.css') }}" media="screen" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/igor_print.css') }}" media="print" />
     <title>Igor | The AWS Caretaker</title>
 </head>
 <body>
