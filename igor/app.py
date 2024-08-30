@@ -59,6 +59,7 @@ def index():
             ],
         )
         rowcode=""
+        rowCount=0
         for r in response['Reservations']:
             for i in r['Instances']:
                 ThisInstance = i['InstanceId']
@@ -70,7 +71,8 @@ def index():
                         ThisTag = t['Value']
                 # Populate another row in the table
                 rowcode += "<tr><td>" + ThisInstance + "</td><td>" + ThisName + "</td><td>" + ThisTag + "</td><td></td><td>" + InstanceState + "</td><td></td></tr>"
-        return render_template('index.html', mainTable=rowcode)
+                rowCount += 1
+        return render_template('index.html', mainTable=rowcode, instanceCount=rowCount)
     else:
         return render_template('auth.html')
 
