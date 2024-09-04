@@ -122,6 +122,18 @@ You can manually operate tasks on a group by selecting the group and using the c
 
 ---
 
+## Back-End Services
+
+Igor needs, as all good man servants do, a personal laboratory area to get things done. In order to blow the candles out and light them again, Igor needs the backend_processing.py to be fired-up every minute. If you have Igor deployed via Docker, this will have been set up for you in the background. If you are running from a local machine directly or installing it on a virtual/physical system then you will need to create a cron entry to launch the backend_processing.py instructions.
+
+```
+* * * * * python3 ./{path to Igor}/backend_processing.py
+```
+
+The backend processing uses the credentials for AWS that you have stored in the web interface.
+
+---
+
 ## System Manuals
 Information on how to run, deploy and develop Igor can be found in the [Manuals Section](./manuals/README.md) of the codebase. You can browse this here or by cloning the repository and viewing locally.
 
