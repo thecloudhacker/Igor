@@ -79,9 +79,12 @@ body{
     font-size: 0.8em;
     min-width: 80%;
 }
-.contentBox tr:hover{
+/*.contentBox tr:hover{
     background-color: #482308;
     color: #ffffff;
+}*/
+.authtable{
+    max-width: 650px;
 }
 .contentBox input{
     background-color: #3c3c3c;

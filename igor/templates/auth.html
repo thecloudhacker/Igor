@@ -28,29 +28,27 @@
         <h2>
             Halt! Approach and be recognised...
         </h2>
-        <form name="authenticate" action="/login" method="post">
-            <p>
-            <table>
-                <tr>
-                    <td rowspan="4"><img src="{{ url_for('static',filename='img/igor_128_anim.gif') }}" alt="Igor" title="Yeth, Mathtur...?" /></td>
-                </tr>
-                <tr>
-                    <td>Username: </td>
-                    <td><input type="text" name="username" /></td>
-                </tr>
-                <tr>
-                    <td>Password: </td>
-                    <td><input type="password" name="password" /></td>
-                </tr>
-                <tr>
-                    <td colspan="2"><center><input type="submit" value="Log In" /></center></td>
-                </tr>
-            </table>
-            </p>
-            <p>
-                {{ failmessage }}
-            </p>
-        </form>
+        <div class="authtable">
+            <form name="authenticate" action="/login" method="post">
+                <table>
+                    <tr>
+                        <td rowspan="3"><img src="{{ url_for('static',filename='img/closedDoor_anim.gif') }}" alt="Door" title="Locked" /></td>
+                        <td>Username: </td>
+                        <td><input type="text" name="username" /></td>
+                    </tr>
+                    <tr>
+                        <td>Password: </td>
+                        <td><input type="password" name="password" /></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><center><input type="submit" value="Log In" /></center></td>
+                    </tr>
+                </table>
+                <p>
+                    {{ failmessage }}
+                </p>
+            </form>
+        </div>
     </div>
     <div class="footer">
         &copy; 2024 TheCloudHacker || Igor, the AWS Caretaker ||  Licensed under GNU GPL v2
