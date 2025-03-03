@@ -42,11 +42,19 @@
                 Group Name:<br/>
                 <input type="text" name="groupname" class="inputBox" />
             </p>
-            <p >
+            <p>
                 Description:<br/>
                 <textarea name="groupdescription"  cols="18" rows="4" class="inputBox"></textarea>
             </p>
-            <p">
+            <p>
+                Schedule:<br/>
+                <select name="schedule">
+                    {% autoescape false %}
+                    {{ scheduleDropdown }}
+                    {% endautoescape %}
+                </select>
+            </p>
+            <p>
                 <input type="submit" value="Save" class="inputBox" />
             </p>
         </form>

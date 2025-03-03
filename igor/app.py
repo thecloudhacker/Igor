@@ -228,6 +228,7 @@ def show_reports_instances():
         response = client.describe_instances()
         tableData=""
         for r in response['Reservations']:
+            ThisManaged = 'false'
             for i in r['Instances']:
                 ThisInstance = i['InstanceId']
                 InstanceState = i['State']['Name']
@@ -235,8 +236,13 @@ def show_reports_instances():
                 for t in i['Tags']:
                     if t['Key'] == 'Name':
                         ThisName = t['Value']
+                    if t['Key'] == 'autostartstop':
+                        if t['Value'] != 'disabled':
+                            ThisManaged = 'true'
+                        else:
+                            ThisManaged = 'false'
                 # Populate another row in the table
-                tableData += "<tr><td>" + ThisInstance + "</td><td>" + ThisName + "</td><td>" + InstanceType + "</td><td>" + InstanceState + "</td><td></td></tr>"
+                tableData += "<tr><td>" + ThisInstance + "</td><td>" + ThisName + "</td><td>" + InstanceType + "</td><td>" + InstanceState + "</td><td>" + ThisManaged + "</td></tr>"
         return render_template('reports_instances.html',mainTable=tableData)
     else:
         return render_template('auth.html')
@@ -286,19 +292,27 @@ def show_groups():
         if request.method == "POST":
             groupname = request.form['groupname']
             groupdescription = request.form['groupdescription']
-            record = groups(groupname,groupdescription)
+            scheduleid = request.form['schedule']
+            record = groups(groupname,groupdescription,scheduleid)
             db.session.add(record)
             db.session.commit()
             updateMessage="Added group " + groupname
         # Display the current groups
         try:
+            # Get the group list
             groupList = db.session.execute(db.select(groups)
                     .order_by(groups.groupname)).scalars()
             for item in groupList:
                 myGroupList += "<tr><td>" + item.groupname + "</td><td>" + item.groupdescription + "</td><td><a href=\"/groups/delete/" + str(item.groupid) + "\" class=\"button\">Delete</a></td></tr>"
+            # Populate the Schedule Drop-Down Menu
+            scheduleMenu = ""
+            scheduleList = db.session.execute(db.select(schedules)
+                .order_by(schedules.scheduleName)).scalars()
+            for scheduleitem in scheduleList:
+                scheduleMenu += "<option value=\"" + str(scheduleitem.scheduleid) + "\">" + scheduleitem.scheduleName + "</opion>"
         except Exception as e:
             processInfo = str(e)
-        return render_template('groups.html',updateMessage=processInfo,groupTable=myGroupList)
+        return render_template('groups.html',updateMessage=processInfo,groupTable=myGroupList,scheduleDropdown=scheduleMenu)
     else:
         return render_template('auth.html')
 
@@ -373,6 +387,7 @@ class groups(db.Model):
     groupid = db.Column(db.Integer, primary_key=True)
     groupname = db.Column(db.String)
     groupdescription = db.Column(db.String)
+    scheduleid = db.Column(db.Integer)
 
     def __init__(self,groupname,groupdescription):
         self.groupname = groupname
