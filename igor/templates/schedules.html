@@ -37,11 +37,11 @@
         <h2>Create Schedule:</h2>
         <form name="addSchedule" action="/schedule" method="post">
             <p>
-                Schedule Name:<br/>
+                Schedule Name :<br/>
                 <input type="text" name="schedulename" class="inputBox"/>
             </p>
             <p>
-                Description:<br/>
+                Description :<br/>
                 <textarea name="scheduledescription" cols="18" rows="4" class="inputBox"></textarea>
             </p>
             <p>
@@ -51,10 +51,14 @@
                         <th>End :</th>
                     </tr>
                     <tr>
-                        <td><input type="text" name="schedulestart" size="8" placeholder="HH:mm" maxlength="5" class="inputBox" /></td>
-                        <td><input type="text" name="scheduleend" size="8" placeholder="HH:mm" maxlength="5" class="inputBox" /></td>
+                        <td><input type="time" name="schedulestart" size="8" placeholder="HH:mm" maxlength="5" class="inputBox" /></td>
+                        <td><input type="time" name="scheduleend" size="8" placeholder="HH:mm" maxlength="5" class="inputBox" /></td>
                     </tr>
                 </table>
+            </p>
+            <p>
+                Days :<br/>
+                <input type="text" name="scheduledays" class="inputBox" value="xxxxxxx" size="7" maxlength="7" />
             </p>
             <p>
                 <input type="submit" value="Save" class="inputBox" />
@@ -75,6 +79,7 @@
                     <th>Schedule Description</th>
                     <th>Start-up Time</th>
                     <th>Power-down Time</th>
+                    <th>Days</th>
                     <th>Action</th>
                 </tr>
                 {% autoescape false %}

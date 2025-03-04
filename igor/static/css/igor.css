@@ -7,6 +7,8 @@ body{
     background-color: #3c3c3c;
     color: #cfcfcf;
 }
+
+/* Primary Menu System */
 .menuBox{
     width: 100%;
     height: 40px;
@@ -58,6 +60,7 @@ body{
     display: block;
 }
 
+/* Main Content Container Settings */
 .contentBox{
     padding: 20px 80px 20px 80px;
     font-family: 'Courier New', Courier, monospace;
@@ -79,10 +82,7 @@ body{
     font-size: 0.8em;
     min-width: 80%;
 }
-/*.contentBox tr:hover{
-    background-color: #482308;
-    color: #ffffff;
-}*/
+
 .authtable{
     max-width: 650px;
 }
@@ -116,6 +116,7 @@ body{
     color: #ffffff;
 }
 
+/* Primary Footer */
 .footer{
     position: fixed;
     bottom: 0;
@@ -140,9 +141,16 @@ body{
     background-color: #482308;
 }
 
+/* Floaty McFloat those Divs */
 .floatRight{
     float: right;
 }
+.floatLeft{
+    float: left;
+    padding-right: 10px;
+}
+
+/* Right Hand Float Form Div */
 .formdiv{
     width: auto;
     display: block;
@@ -154,8 +162,58 @@ body{
     font-weight: 600;
     font-size: 1.2em;
 }
+/* Right Hand Info Div */
+.aboutdiv{
+    width: auto;
+    max-width: 200px;
+    display: block;
+    padding: 14px;
+    background-color: #333333;
+    text-decoration: none;
+    color: #ffffff;
+    font-family: 'Amatic Bold';
+    font-weight: 600;
+    font-size: 1.2em;
+}
 
 .inputBox{
     font-family: 'Courier New', Courier, monospace;
     font-size: 0.8em;
+}
+
+/* Report Interface */
+.reportButton{
+    display: block;
+    padding: 10px;
+    width: 350px;
+    height: 40px;
+    font-weight: 900;
+    color: #ffffff;
+    border: 1px solid #999933;
+    text-decoration: none;
+}
+.reportButton:hover{
+    background-color:#999933;
+    color: #333333;
+}
+
+/* Main text hyperlinks */
+a{
+    color: #ffffff;
+    text-decoration: none;
+}
+a.visited{
+    color: #ffffff;
+    text-decoration: none;
+}
+a:hover{
+    color: #999933;
+}
+
+/* Table Styles */
+th{
+    text-align: left;
+    background-color: #482308;
+    color: #ffffff;
+    padding: 5px;
 }

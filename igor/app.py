@@ -62,15 +62,36 @@ def index():
         rowCount=0
         for r in response['Reservations']:
             for i in r['Instances']:
+                ThisTag = ""
+                ThisName = ""
+                groupName = ""
+                scheduleName = ""
+                thisscheduleid = ""
+                MyInstanceState = ""
                 ThisInstance = i['InstanceId']
                 InstanceState = i['State']['Name']
+                if InstanceState == "stopped":
+                    MyInstanceState = "<a title=\"Stopped\">&#128164;</a>"
+                if InstanceState == "running":
+                    MyInstanceState = "&#128184;"
+
                 for t in i['Tags']:
                     if t['Key'] == 'Name':
                         ThisName = t['Value']
                     if t['Key'] == 'autostartstop':
                         ThisTag = t['Value']
+                groupName = ""
+                mygroupList = db.session.execute(db.select(groups)
+                    .filter_by(groupname=ThisTag)).scalars()
+                for mygroupitem in mygroupList:
+                    groupName = mygroupitem.groupname
+                    thisscheduleid = mygroupitem.scheduleid
+                myscheduleList = db.session.execute(db.select(schedules)
+                    .filter_by(scheduleid=thisscheduleid)).scalars()
+                for myscheduleitem in myscheduleList:
+                    scheduleName = myscheduleitem.scheduleName
                 # Populate another row in the table
-                rowcode += "<tr><td>" + ThisInstance + "</td><td>" + ThisName + "</td><td>" + ThisTag + "</td><td></td><td>" + InstanceState + "</td><td></td></tr>"
+                rowcode += "<tr><td>" + ThisInstance + "</td><td>" + ThisName + "</td><td>" + ThisTag + "</td><td>" + groupName + "</td><td>" + scheduleName + "</td><td align=\"center\">" + MyInstanceState + "</td></tr>"
                 rowCount += 1
         return render_template('index.html', mainTable=rowcode, instanceCount=rowCount)
     else:
@@ -141,16 +162,17 @@ def show_schedule():
             scheduledescription = request.form['scheduledescription']
             starttime = request.form['schedulestart']
             endtime = request.form['scheduleend']
-            record = schedules(schedulename,scheduledescription,starttime,endtime)
+            scheduleDays = request.form['scheduledays']
+            record = schedules(schedulename,scheduledescription,starttime,endtime,scheduleDays)
             db.session.add(record)
             db.session.commit()
             updateMessage="Added Schedule \"" + schedulename + "\""
         # Display current schedules
         try:
             scheduleList = db.session.execute(db.select(schedules)
-                    .order_by(schedules.scheduleName)).scalars()
+                .order_by(schedules.scheduleName)).scalars()
             for item in scheduleList:
-                myList += "<tr><td>" + item.scheduleName + "</td><td>" + item.scheduleDescription + "</td><td>" + item.scheduleStart + "</td><td>" + item.scheduleEnd  + "</td><td><a href=\"/schedule/" + str(item.scheduleid) + "\" class=\"button\">View</a></td></tr>"
+                myList += "<tr><td>" + item.scheduleName + "</td><td>" + item.scheduleDescription + "</td><td>" + item.scheduleStart + "</td><td>" + item.scheduleEnd + "</td><td>" + item.scheduleDays + "</td><td><a href=\"/schedule/" + str(item.scheduleid) + "\" class=\"button\">View</a></td></tr>"
         except Exception as e:
             processInfo = str(e)
         return render_template('schedules.html',updateMessage=processInfo,scheduleTable=myList)
@@ -171,7 +193,7 @@ def show_specific_schedule(scheduleid):
                     .filter_by(scheduleid=scheduleid)
                     .order_by(schedules.scheduleName)).scalars()
             for item in scheduleList:
-                scheduleInfo += "<h3>" + item.scheduleName + "</h3><strong>" + item.scheduleStart + " to " + item.scheduleEnd + "</strong><p>" + item.scheduleDescription + "<br/><a href=\"/schedule/delete/" + str(item.scheduleid) + "\" class=\"button\">Delete</a></p>"
+                scheduleInfo += "<h3>Schedule: " + item.scheduleName + "</h3><p><strong>" + item.scheduleStart + " to " + item.scheduleEnd + "</strong><br/>Days: " + item.scheduleDays + "</p><p>" + item.scheduleDescription + "<br/><a href=\"/schedule/delete/" + str(item.scheduleid) + "\" class=\"button\">Delete</a></p>"
         except Exception as e:
             processInfo = str(e)
         return render_template('schedules_view.html',updateMessage=processInfo,scheduleInfo=scheduleInfo)
@@ -228,8 +250,9 @@ def show_reports_instances():
         response = client.describe_instances()
         tableData=""
         for r in response['Reservations']:
-            ThisManaged = 'false'
+            ThisManaged = ''
             for i in r['Instances']:
+                ThisManaged = '&#128721;'
                 ThisInstance = i['InstanceId']
                 InstanceState = i['State']['Name']
                 InstanceType = i['InstanceType']
@@ -238,11 +261,9 @@ def show_reports_instances():
                         ThisName = t['Value']
                     if t['Key'] == 'autostartstop':
                         if t['Value'] != 'disabled':
-                            ThisManaged = 'true'
-                        else:
-                            ThisManaged = 'false'
+                            ThisManaged = '&#9989;'
                 # Populate another row in the table
-                tableData += "<tr><td>" + ThisInstance + "</td><td>" + ThisName + "</td><td>" + InstanceType + "</td><td>" + InstanceState + "</td><td>" + ThisManaged + "</td></tr>"
+                tableData += "<tr><td>" + ThisInstance + "</td><td>" + ThisName + "</td><td>" + InstanceType + "</td><td>" + InstanceState + "</td><td align=\"center\">" + ThisManaged + "</td></tr>"
         return render_template('reports_instances.html',mainTable=tableData)
     else:
         return render_template('auth.html')
@@ -303,7 +324,12 @@ def show_groups():
             groupList = db.session.execute(db.select(groups)
                     .order_by(groups.groupname)).scalars()
             for item in groupList:
-                myGroupList += "<tr><td>" + item.groupname + "</td><td>" + item.groupdescription + "</td><td><a href=\"/groups/delete/" + str(item.groupid) + "\" class=\"button\">Delete</a></td></tr>"
+                scheduleName = ""
+                myscheduleList = db.session.execute(db.select(schedules)
+                    .filter_by(scheduleid=item.scheduleid)).scalars()
+                for myscheduleitem in myscheduleList:
+                    scheduleName = myscheduleitem.scheduleName
+                myGroupList += "<tr><td>" + item.groupname + "</td><td>" + item.groupdescription + "</td><td>" + scheduleName + "</td><td><a href=\"/groups/delete/" + str(item.groupid) + "\" class=\"button\">Delete</a></td></tr>"
             # Populate the Schedule Drop-Down Menu
             scheduleMenu = ""
             scheduleList = db.session.execute(db.select(schedules)
@@ -389,9 +415,10 @@ class groups(db.Model):
     groupdescription = db.Column(db.String)
     scheduleid = db.Column(db.Integer)
 
-    def __init__(self,groupname,groupdescription):
+    def __init__(self,groupname,groupdescription,scheduleid):
         self.groupname = groupname
         self.groupdescription = groupdescription
+        self.scheduleid = scheduleid
 
 class instances(db.Model):
     __tablename__ = 'instances'
@@ -406,12 +433,14 @@ class schedules(db.Model):
     scheduleDescription = db.Column(db.String)
     scheduleStart = db.Column(db.String)
     scheduleEnd = db.Column(db.String)
+    scheduleDays = db.Column(db.String)
     
-    def __init__(self,scheduleName,scheduleDescription,scheduleStart,scheduleEnd):
+    def __init__(self,scheduleName,scheduleDescription,scheduleStart,scheduleEnd,scheduleDays):
         self.scheduleName = scheduleName
         self.scheduleDescription = scheduleDescription
         self.scheduleStart = scheduleStart
         self.scheduleEnd = scheduleEnd
+        self.scheduleDays = scheduleDays
 
 
 ############################################################

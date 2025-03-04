@@ -80,7 +80,13 @@ body{
 .floatRight{
     float: right;
 }
+.floatLeft{
+    display: none;
+}
 .formdiv{
+    display: none;
+}
+.aboutdiv{
     display: none;
 }
 
