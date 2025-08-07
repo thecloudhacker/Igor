@@ -7,6 +7,8 @@ import csv
 import hashlib
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text
+import datetime
+from datetime import datetime as dt
 
 # Load AWS Config from the file system settings
 try:
@@ -34,7 +36,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 # initialize the app with Flask-SQLAlchemy db
 db.init_app(app)
-
 
 # Set secret key for sessions
 # This should be changed to a different item for each deployment
@@ -71,9 +72,9 @@ def index():
                 ThisInstance = i['InstanceId']
                 InstanceState = i['State']['Name']
                 if InstanceState == "stopped":
-                    MyInstanceState = "<a title=\"Stopped\">&#128164;</a>"
+                    MyInstanceState = "<a title=\"Stopped\" alt=\"Stopped\">&#9940;</a>"
                 if InstanceState == "running":
-                    MyInstanceState = "&#128184;"
+                    MyInstanceState = "<a title=\"Running\" alt=\"Running\">&#128250;</a>"
 
                 for t in i['Tags']:
                     if t['Key'] == 'Name':
@@ -95,7 +96,7 @@ def index():
                 rowCount += 1
         return render_template('index.html', mainTable=rowcode, instanceCount=rowCount)
     else:
-        return render_template('auth.html')
+        return render_template('auth.html',imgBox="img/igor_128_anim.gif")
 
 
 
@@ -110,9 +111,9 @@ def login():
             return redirect(url_for('index'))
         else:
             session.pop('username', None)
-            return render_template('auth.html',failmessage="Authentication Failure")
+            return render_template('auth.html',failmessage="I do not recognise your paperwork, traveller.",imgBox="img/closedDoor_anim.gif")
     else:
-        return render_template('auth.html')
+        return render_template('auth.html',imgBox="img/igor_128_anim.gif")
 
 
 
@@ -446,6 +447,99 @@ class schedules(db.Model):
 ############################################################
 
 
+
+################## BACKEND ADMIN PROCESSES #############################
+
+
+######### RUN INSTANCE CONTROL FOR A PARTICULAR TAG ##########
+@app.route('/cronjobs', methods=['GET'])
+def checkGroupMembers():
+    cronOutput=""
+    # Get the Date Time
+    today = datetime.datetime.today()
+    dayOfWeek = today.weekday()
+    # Get the current time
+    nowtime = dt.now().strftime('%H:%M')
+    # For each item in the known groups
+    try:
+        groupName = ""
+        # For every group member
+        groupList = db.session.execute(db.select(groups)
+                    .order_by(groups.groupname)).scalars()
+        for item in groupList:
+            scheduleName = ""
+            scheduleStart = ""
+            scheduleEnd = ""
+            scheduleDays = ""
+            groupName = item.groupname
+            myscheduleList = db.session.execute(db.select(schedules)
+                .filter_by(scheduleid=item.scheduleid)).scalars()
+            for myscheduleitem in myscheduleList:
+                stateChange = ""
+                scheduleStart = myscheduleitem.scheduleStart
+                scheduleEnd = myscheduleitem.scheduleEnd
+                scheduleDays = myscheduleitem.scheduleDays
+                scheduleName = myscheduleitem.scheduleName
+                # Check the day from the list
+                if scheduleDays[dayOfWeek] == "x":
+                    # Check the launch time
+                    # If now time matches the startup time then fire the process
+                    cronOutput += scheduleName + " : " + scheduleStart + " : " + scheduleEnd + " : -Scheduled day- <br/>"
+                    if str(nowtime) == str(scheduleStart):
+                        cronOutput += "Schedule " + scheduleName + " [START]<br/>"
+                        stateChange = changeGroupState(groupName,"start")                    
+                    if str(nowtime) == str(scheduleEnd):
+                        cronOutput += "Schedule " + scheduleName + " [STOP]<br/>"
+                        stateChange = changeGroupState(groupName,"stop")
+                    cronOutput += stateChange
+                else:
+                    cronOutput += scheduleName + " : " + scheduleStart + " : " + scheduleEnd + " : -Not a scheduled day- <br/>"
+    except Exception as e:
+        # Error out
+        logMessage = "ERROR! " + str(e)
+        exit(1)
+    return render_template('cron.html',cronOutputMessage=cronOutput)
+
+    
+# Startup or Shutdown instances in the group specified
+def changeGroupState(groupName,stateMode):
+    myclient = boto3.client('ec2', aws_access_key_id = AWS_KEY, aws_secret_access_key = AWS_SECRET, region_name = AWS_REGION)
+    response = myclient.describe_instances()
+    logMessage = ""
+    instanceCounter = 0
+    for r in response['Reservations']:
+        for i in r['Instances']:
+            ThisInstance = i['InstanceId']
+            InstanceState = i['State']['Name']
+            for t in i['Tags']:
+                if t['Key'] == 'Name':
+                    ThisName = t['Value']
+                if t['Key'] == 'autostartstop':
+                    if t['Value'] == groupName:
+                        instanceCounter += 1
+                        # Launch instances with the tag
+                        if stateMode == "start":
+                            logMessage += "Changing State for " + ThisInstance + " to " + stateMode + "<br/>"
+                            response = myclient.start_instances(
+                                InstanceIds=[
+                                    ThisInstance,
+                                ]
+                            )
+                            # logMessage += response
+                        else:
+                            if InstanceState != "stopped":
+                                logMessage += "Changing State for " + ThisInstance + " to " + stateMode + "<br/>"
+                                response = myclient.stop_instances(
+                                    InstanceIds=[
+                                        ThisInstance,
+                                    ], 
+                                    Force=True
+                                )
+                                # logMessage += response
+                            else:
+                                logMessage += "Instance " + ThisInstance + " already stopped - no action taken<br/>"
+    logMessage += str(instanceCounter) + " instances<br/>"
+    return logMessage
 
 
 ##################################################### APP SETUP

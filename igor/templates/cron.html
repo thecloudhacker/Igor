@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static',filename='img/igor_32_anim.gif') }}">
+    <style>
+        @font-face {
+            font-family: 'Jacquard';
+                src: url("{{ url_for('static',filename='fonts/Jacquard12-Regular.ttf') }}")  format('truetype')
+        }
+        @font-face {
+            font-family: 'Amatic Regular';
+                src: url("{{ url_for('static',filename='fonts/AmaticSC-Regular.ttf') }}")  format('truetype')
+        }
+        @font-face {
+            font-family: 'Amatic Bold';
+                src: url("{{ url_for('static',filename='fonts/AmaticSC-Bold.ttf') }}")  format('truetype')
+        }
+    </style>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/igor.css') }}" media="screen" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/igor_print.css') }}" media="print" />
+    <title>Igor | The AWS Caretaker</title>
+</head>
+<body>
+    <div class="contentBox">
+        <h1>Igor</h1>
+        <h2>Scheduled Tasks</h2>
+        <p>
+                {% autoescape false %}
+                {{ cronOutputMessage }}
+                {% endautoescape %}
+        </p>
+    </div>
+</body>
+</html>
