@@ -330,7 +330,7 @@ def show_groups():
                     .filter_by(scheduleid=item.scheduleid)).scalars()
                 for myscheduleitem in myscheduleList:
                     scheduleName = myscheduleitem.scheduleName
-                myGroupList += "<tr><td>" + item.groupname + "</td><td>" + item.groupdescription + "</td><td>" + scheduleName + "</td><td><a href=\"/groups/delete/" + str(item.groupid) + "\" class=\"button\">Delete</a></td></tr>"
+                myGroupList += "<tr><td>" + item.groupname + "</td><td>" + item.groupdescription + "</td><td>" + scheduleName + "</td><td><a href=\"/groups/delete/" + str(item.groupid) + "\" class=\"button\">Delete</a> <a href=\"/groups/start/" + str(item.groupid) + "\" class=\"button\">Start Group</a> <a href=\"/groups/stop/" + str(item.groupid) + "\" class=\"button\">Stop Group</a></td></tr>"
             # Populate the Schedule Drop-Down Menu
             scheduleMenu = ""
             scheduleList = db.session.execute(db.select(schedules)
@@ -357,6 +357,24 @@ def delete_group(groupid):
                 processInfo="Removed group \"" + request.form['groupname'] + "\""
             except Exception as e:
                 processInfo = str(e)
+            
+            # Get the group list
+            groupList = db.session.execute(db.select(groups)
+                    .order_by(groups.groupname)).scalars()
+            for item in groupList:
+                scheduleName = ""
+                myscheduleList = db.session.execute(db.select(schedules)
+                    .filter_by(scheduleid=item.scheduleid)).scalars()
+                for myscheduleitem in myscheduleList:
+                    scheduleName = myscheduleitem.scheduleName
+                    myGroupList += "<tr><td>" + item.groupname + "</td><td>" + item.groupdescription + "</td><td>" + scheduleName + "</td><td><a href=\"/groups/delete/" + str(item.groupid) + "\" class=\"button\">Delete</a></td></tr>"
+            # Populate the Schedule Drop-Down Menu
+            scheduleMenu = ""
+            scheduleList = db.session.execute(db.select(schedules)
+                .order_by(schedules.scheduleName)).scalars()
+            for scheduleitem in scheduleList:
+                scheduleMenu += "<option value=\"" + str(scheduleitem.scheduleid) + "\">" + scheduleitem.scheduleName + "</opion>"
+            return render_template('groups.html',updateMessage=processInfo,groupTable=myGroupList,scheduleDropdown=scheduleMenu)
         else:
             # Display the current groups
             try:
@@ -367,10 +385,55 @@ def delete_group(groupid):
                     myGroupList += "<tr><td><strong>" + item.groupname + "</strong><br/>" + item.groupdescription + "</td></tr><tr><td colspan=\"2\"><form action=\"/groups/delete/" + str(item.groupid) + "\" method=\"post\"><input type=\"hidden\" name=\"groupname\" value=\"" + str(item.groupname) + "\" /><input type=\"submit\" class=\"button\" value=\"Confirm\"></form></td></tr>"
             except Exception as e:
                 processInfo = str(e)
-        return render_template('groups_delete.html',updateMessage=processInfo,groupTable=myGroupList)
+            return render_template('groups_delete.html',updateMessage=processInfo,groupTable=myGroupList)
     else:
         return render_template('auth.html')
 
+
+
+
+########################### MANUAL START / STOP OF GROUP MACHINES 
+
+# Start Instances in a group
+@app.route('/group/start', methods=['GET'])
+def start_group_instances():
+    if 'username' in session:
+        updatemsg = ""
+        # Check group details
+        try:
+            groupList = db.session.execute(db.select(groups)
+                .filter_by(groupid=groupid)
+                .order_by(groups.groupname)).scalars()
+            for item in groupList:
+                # Fire off the group process
+                response = changeGroupState(item.groupname,'start')
+            updatemsg += response
+        except Exception as e:
+            updatemsg += str(e)
+        return render_template('groups.html',updatemsg=updatemsg)
+    else:
+        return render_template('auth.html')
+
+
+# Stop all Instances in a group
+@app.route('/group/stop', methods=['GET'])
+def stop_group_instances():
+    if 'username' in session:
+        updatemsg = ""
+        # Check group details
+        try:
+            groupList = db.session.execute(db.select(groups)
+                .filter_by(groupid=groupid)
+                .order_by(groups.groupname)).scalars()
+            for item in groupList:
+                # Fire off the group process
+                response = changeGroupState(item.groupname,'stop')
+            updatemsg += response
+        except Exception as e:
+            updatemsg += str(e)
+        return render_template('groups.html',updatemsg=updatemsg)
+    else:
+        return render_template('auth.html')
 
 
 
