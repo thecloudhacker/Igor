@@ -116,6 +116,24 @@ body{
     color: #ffffff;
 }
 
+.groupbutton{
+    display: block;
+    margin: 5px;
+    border: 1px solid #999933;
+    border-radius: 15px;
+    background-color: #999933;
+    color:#482308;
+    width: 150px;
+    text-align: center;
+    font-weight: 700;
+    text-decoration: none;
+    float: left;
+}
+.groupbutton:hover{
+    color: #ffffff;
+    background-color: #3c3c3c;
+}
+
 /* Primary Footer */
 .footer{
     position: fixed;

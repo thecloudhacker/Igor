@@ -330,7 +330,7 @@ def show_groups():
                     .filter_by(scheduleid=item.scheduleid)).scalars()
                 for myscheduleitem in myscheduleList:
                     scheduleName = myscheduleitem.scheduleName
-                myGroupList += "<tr><td>" + item.groupname + "</td><td>" + item.groupdescription + "</td><td>" + scheduleName + "</td><td><a href=\"/groups/delete/" + str(item.groupid) + "\" class=\"button\">Delete</a> <a href=\"/groups/start/" + str(item.groupid) + "\" class=\"button\">Start Group</a> <a href=\"/groups/stop/" + str(item.groupid) + "\" class=\"button\">Stop Group</a></td></tr>"
+                myGroupList += "<tr><td>" + item.groupname + "</td><td>" + item.groupdescription + "</td><td>" + scheduleName + "</td><td><a href=\"/groups/edit/" + str(item.groupid) + "\" class=\"groupbutton\">Edit</a>  <a href=\"/groups/delete/" + str(item.groupid) + "\" class=\"groupbutton\">Delete</a> <a href=\"/groups/start/" + str(item.groupid) + "\" class=\"groupbutton\">Start Group</a> <a href=\"/groups/stop/" + str(item.groupid) + "\" class=\"groupbutton\">Stop Group</a></td></tr>"
             # Populate the Schedule Drop-Down Menu
             scheduleMenu = ""
             scheduleList = db.session.execute(db.select(schedules)
@@ -340,6 +340,49 @@ def show_groups():
         except Exception as e:
             processInfo = str(e)
         return render_template('groups.html',updateMessage=processInfo,groupTable=myGroupList,scheduleDropdown=scheduleMenu)
+    else:
+        return render_template('auth.html')
+
+# EDIT GROUP INFORMATION
+@app.route('/groups/edit/<groupid>', methods=['GET', 'POST'])
+def edit_groups(groupid):
+    processInfo = ""
+    myGroupName = ""
+    myGroupDescription = ""
+    myGroupSchedule = ""
+    if 'username' in session:
+        if request.method == "POST":
+            groupname = request.form['groupname']
+            groupdescription = request.form['groupdescription']
+            scheduleid = request.form['schedule']
+            group = groups.query.get(groupid)
+            group.groupname = groupname
+            group.groupdescription = groupdescription
+            group.scheduleid = scheduleid
+            db.session.commit()
+            updateMessage="Saved group " + groupname
+        # Display the current groups
+        try:
+            # Get the group list
+            groupList = db.session.execute(db.select(groups)
+                .filter_by(groupid=groupid)
+                .order_by(groups.groupname)).scalars()
+            for item in groupList:
+                myGroupName = item.groupname
+                myGroupDescription = item.groupdescription 
+                myGroupSchedule = item.scheduleid
+                # Populate the Schedule Drop-Down Menu
+            scheduleMenu = ""
+            scheduleList = db.session.execute(db.select(schedules)
+                .order_by(schedules.scheduleName)).scalars()
+            for scheduleitem in scheduleList:
+                if scheduleitem.scheduleid == myGroupSchedule:
+                    scheduleMenu += "<option value=\"" + str(scheduleitem.scheduleid) + "\" selected=\"selected\">* " + scheduleitem.scheduleName + "</opion>"
+                else:
+                    scheduleMenu += "<option value=\"" + str(scheduleitem.scheduleid) + "\">" + scheduleitem.scheduleName + "</opion>"
+        except Exception as e:
+            processInfo = str(e)
+        return render_template('groups_edit.html',updateMessage=processInfo,groupName=myGroupName,groupDescription=myGroupDescription,groupid=groupid,scheduleDropdown=scheduleMenu)
     else:
         return render_template('auth.html')
 

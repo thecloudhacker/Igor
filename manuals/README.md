@@ -62,11 +62,24 @@ The authentication screen is the first page you will be shown and will require y
 
 ![Auth Screen](./img/login.jpg)
 
-Instances are placed into groups which then have schedules applied
+### Scheduling 
 
-![Auth Screen](./img/groups.jpg)
+Instances are automatically placed into groups which have schedules applied based on the tags you add to instances. 
 
-![Auth Screen](./img/schedules.jpg)
+The first thing you need to set up in Igor are the schedules. 
+
+![Schedule Screen](./img/schedules.jpg)
+
+Schedule days are in the format **x** and **o** for each day ( Mon,Tues,Wed,Thu,Fri,Sat,Sun ), e.g. xxxxxoo for weekday run by the cron scripts or oooooxx for weekend run only.
+
+### Groups
+
+Once you have generated the schedules you want, create your groups and link them to a schedule. Using the group name in your AWS panel, instances will automatically be targetted by Igor.
+
+![Group Screen](./img/groups.jpg)
+
+
+### Settings
 
 Once you sign in you can reset your admin account password and generate more users in the settings page.
 
