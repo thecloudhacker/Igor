@@ -68,7 +68,7 @@ Instances are automatically placed into groups which have schedules applied base
 
 The first thing you need to set up in Igor are the schedules. 
 
-![Schedule Screen](./img/schedules.jpg)
+![Schedule Screen](./img/schedules.png)
 
 Schedule days are in the format **x** and **o** for each day ( Mon,Tues,Wed,Thu,Fri,Sat,Sun ), e.g. xxxxxoo for weekday run by the cron scripts or oooooxx for weekend run only.
 
@@ -76,7 +76,7 @@ Schedule days are in the format **x** and **o** for each day ( Mon,Tues,Wed,Thu,
 
 Once you have generated the schedules you want, create your groups and link them to a schedule. Using the group name in your AWS panel, instances will automatically be targetted by Igor.
 
-![Group Screen](./img/groups.jpg)
+![Group Screen](./img/groups.png)
 
 
 ### Settings

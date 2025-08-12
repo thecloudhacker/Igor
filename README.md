@@ -10,7 +10,7 @@
 
 With a mixture of front-end web interface and back-end comms scripts, Igor is able to keep a watch on your AWS estate and turn off the electric generators if calculatory activities are not requried for the evening's scientific experiments.
 
-![Groups](./manuals/img/groups.jpg)
+![Groups](./manuals/img/groups.png)
 
 ---
 
@@ -22,7 +22,7 @@ EC2 instances are superbly useful and necessary in many environments, however th
 
 By creating operational time zones and placing instances into groups you can start to control the power on and off activities and even set cut-off times for operation. Once you reach that time, Igor will send a signal to shut down the EC2 instances or power them back on ready for another day of work.
 
-![Schedules](./manuals/img/schedules.jpg)
+![Schedules](./manuals/img/schedules.png)
 
 ---
 
