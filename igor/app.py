@@ -173,7 +173,7 @@ def show_schedule():
             scheduleList = db.session.execute(db.select(schedules)
                 .order_by(schedules.scheduleName)).scalars()
             for item in scheduleList:
-                myList += "<tr><td>" + item.scheduleName + "</td><td>" + item.scheduleDescription + "</td><td>" + item.scheduleStart + "</td><td>" + item.scheduleEnd + "</td><td>" + item.scheduleDays + "</td><td><a href=\"/schedule/" + str(item.scheduleid) + "\" class=\"button\">View</a></td></tr>"
+                myList += "<tr><td>" + item.scheduleName + "</td><td>" + item.scheduleDescription + "</td><td>" + item.scheduleStart + "</td><td>" + item.scheduleEnd + "</td><td>" + item.scheduleDays + "</td><td><a href=\"/schedule/" + str(item.scheduleid) + "\" class=\"groupbutton\">View</a> <a href=\"/schedule/edit/" + str(item.scheduleid) + "\" class=\"groupbutton\">Edit</a> </td></tr>"
         except Exception as e:
             processInfo = str(e)
         return render_template('schedules.html',updateMessage=processInfo,scheduleTable=myList)
@@ -194,7 +194,7 @@ def show_specific_schedule(scheduleid):
                     .filter_by(scheduleid=scheduleid)
                     .order_by(schedules.scheduleName)).scalars()
             for item in scheduleList:
-                scheduleInfo += "<h3>Schedule: " + item.scheduleName + "</h3><p><strong>" + item.scheduleStart + " to " + item.scheduleEnd + "</strong><br/>Days: " + item.scheduleDays + "</p><p>" + item.scheduleDescription + "<br/><a href=\"/schedule/delete/" + str(item.scheduleid) + "\" class=\"button\">Delete</a></p>"
+                scheduleInfo += "<h3>Schedule: " + item.scheduleName + "</h3><p><strong>" + item.scheduleStart + " to " + item.scheduleEnd + "</strong><br/>Days: " + item.scheduleDays + "</p><p>" + item.scheduleDescription + "<br/><a href=\"/schedule/edit/" + str(item.scheduleid) + "\" class=\"button\">Edit</a><br/> <a href=\"/schedule/delete/" + str(item.scheduleid) + "\" class=\"button\">Delete</a></p>"
         except Exception as e:
             processInfo = str(e)
         return render_template('schedules_view.html',updateMessage=processInfo,scheduleInfo=scheduleInfo)
@@ -213,24 +213,79 @@ def delete_schedule(scheduleid):
                 record = schedules.query.filter_by(scheduleid=scheduleid).first()
                 db.session.delete(record)
                 db.session.commit()
-                processInfo="Removed schedule \"" + request.form['schedulename'] + "\""
+                processInfo = "Removed schedule \"" + request.form['schedulename'] + "\""
+                myList = ""
+                try:
+                    scheduleList = db.session.execute(db.select(schedules)
+                        .order_by(schedules.scheduleName)).scalars()
+                    for item in scheduleList:
+                        myList += "<tr><td>" + item.scheduleName + "</td><td>" + item.scheduleDescription + "</td><td>" + item.scheduleStart + "</td><td>" + item.scheduleEnd + "</td><td>" + item.scheduleDays + "</td><td><a href=\"/schedule/" + str(item.scheduleid) + "\" class=\"groupbutton\">View</a> <a href=\"/schedule/edit/" + str(item.scheduleid) + "\" class=\"groupbutton\">Edit</a> </td></tr>"
+                except Exception as e:
+                    processInfo = str(e)
+                return render_template('schedules.html',updateMessage=processInfo,scheduleTable=myList)
             except Exception as e:
                 processInfo = str(e)
         else:
             # Display the current schedules
             try:
-                groupList = db.session.execute(db.select(schedules)
+                scheduleList = db.session.execute(db.select(schedules)
                         .filter_by(scheduleid=scheduleid)
                         .order_by(schedules.scheduleName)).scalars()
-                for item in groupList:
+                for item in scheduleList:
                     myScheduleList += "<tr><td><strong>" + item.scheduleName + "</strong><br/>" + item.scheduleDescription + "</td></tr><tr><td colspan=\"2\"><form action=\"/schedule/delete/" + str(item.scheduleid) + "\" method=\"post\"><input type=\"hidden\" name=\"schedulename\" value=\"" + str(item.scheduleName) + "\" /><input type=\"submit\" class=\"button\" value=\"Confirm\"></form></td></tr>"
             except Exception as e:
                 processInfo = str(e)
-        return render_template('schedules_delete.html',updateMessage=processInfo,scheduleTable=myScheduleList)
+            return render_template('schedules_delete.html',updateMessage=processInfo,scheduleTable=myScheduleList)
     else:
         return render_template('auth.html')
     
 
+# Display Specific Schedule
+@app.route('/schedule/edit/<scheduleid>', methods=['GET', 'POST'])
+def edit_specific_schedule(scheduleid):
+    processInfo=""
+    # Display the current schedules
+    if 'username' in session:
+        if request.method == "POST":
+            try:
+                scheduleName = request.form['schedulename']
+                scheduleStart = request.form['schedulestart']
+                scheduleEnd = request.form['scheduleend']
+                scheduleDays = request.form['scheduledays']
+                scheduleDescription = request.form['scheduledescription']
+                # Update Schedule
+                schedule = schedules.query.get(scheduleid)
+                schedule.scheduleName = scheduleName
+                schedule.scheduleStart = scheduleStart
+                schedule.scheduleEnd = scheduleEnd
+                schedule.scheduleDays = scheduleDays
+                schedule.scheduleDescription = scheduleDescription
+                db.session.commit()
+                processInfo += "  Updated Schedule " + request.form['schedulename']
+            except Exception as e:
+                processInfo += str(e)
+            return render_template('schedules_edit.html',updateMessage=processInfo,scheduleName=scheduleName,scheduleStart=scheduleStart,scheduleEnd=scheduleEnd,scheduleDays=scheduleDays,scheduleDescription=scheduleDescription,scheduleid=scheduleid)
+        else:
+            try:
+                schedulename = ""
+                schedulestart = ""
+                scheduleend = ""
+                scheduledays = ""
+                scheduledescription = ""
+                scheduleList = db.session.execute(db.select(schedules)
+                        .filter_by(scheduleid=scheduleid)
+                        .order_by(schedules.scheduleName)).scalars()
+                for item in scheduleList:
+                    schedulename = item.scheduleName
+                    schedulestart = item.scheduleStart
+                    scheduleend = item.scheduleEnd
+                    scheduledays = item.scheduleDays
+                    scheduledescription = item.scheduleDescription
+            except Exception as e:
+                processInfo = str(e)
+            return render_template('schedules_edit.html',updateMessage=processInfo,scheduleName=schedulename,scheduleStart=schedulestart,scheduleEnd=scheduleend,scheduleDays=scheduledays,scheduleDescription=scheduledescription,scheduleid=scheduleid)
+    else:
+        return render_template('auth.html')
 
 
 ##################################################### REPORTS
@@ -513,7 +568,7 @@ def show_settings():
 
 
 
-################## Database Specification ##################
+################## Database Specification #################################### Database Specification ##################
 
 class groups(db.Model):
     __tablename__ = 'groups'
@@ -550,7 +605,7 @@ class schedules(db.Model):
         self.scheduleDays = scheduleDays
 
 
-############################################################
+#########################################################################################################################
 
 
 

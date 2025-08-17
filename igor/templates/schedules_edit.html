@@ -33,59 +33,34 @@
             <li><a href="/logout">Logout</a></li>
         </ol>
     </div>
-    <div class="floatRight formdiv">
-        <h2>Create Schedule:</h2>
-        <form name="addSchedule" action="/schedule" method="post">
+    <div class="contentBox">
+        <h1><img src="{{ url_for('static',filename='img/igor_32_anim.gif') }}" alt="Igor" title="Yeth, Mathtur...?" /> Igor</h1>
+        <h2>Schedules : edit</h2>
+        <form name="editSchedule" action="/schedule/edit/{{ scheduleid }}" method="post">
             <p>
                 Schedule Name :<br/>
-                <input type="text" name="schedulename" class="inputBox"/>
+                <input type="text" name="schedulename" class="inputBox" value="{{ scheduleName }}" />
             </p>
             <p>
                 Description :<br/>
-                <textarea name="scheduledescription" cols="18" rows="4" class="inputBox"></textarea>
+                <textarea name="scheduledescription" cols="18" rows="4" class="inputBox">{{ scheduleDescription }}</textarea>
             </p>
             <p>
-                <table>
-                    <tr>
-                        <th>Start :</th>
-                        <th>End :</th>
-                    </tr>
-                    <tr>
-                        <td><input type="time" name="schedulestart" size="8" placeholder="HH:mm" maxlength="5" class="inputBox" /></td>
-                        <td><input type="time" name="scheduleend" size="8" placeholder="HH:mm" maxlength="5" class="inputBox" /></td>
-                    </tr>
-                </table>
+                Start :<br/>
+                    <input type="time" name="schedulestart" size="8" placeholder="HH:mm" maxlength="5" class="inputBox" value="{{ scheduleStart }}" />
+                End :<br/>
+                    <input type="time" name="scheduleend" size="8" placeholder="HH:mm" maxlength="5" class="inputBox" value="{{ scheduleEnd }}" />
             </p>
             <p>
                 Days :<br/>
-                <input type="text" name="scheduledays" class="inputBox" value="xxxxxxx" size="7" maxlength="7" />
+                <input type="text" name="scheduledays" class="inputBox" size="7" maxlength="7" value="{{ scheduleDays }}" />
             </p>
             <p>
                 <input type="submit" value="Save" class="inputBox" />
             </p>
         </form>
-    </div>
-    <div class="contentBox">
-        <h1><img src="{{ url_for('static',filename='img/igor_32_anim.gif') }}" alt="Igor" title="Yeth, Mathtur...?" /> Igor</h1>
-        <h2>Schedules</h2>
-        <p>{{ updateMessage }}</p>
         <p>
-            Instance Schedules:
-        </p>
-        <p>
-            <table>
-                <tr>
-                    <th>Schedule Name</th>
-                    <th>Schedule Description</th>
-                    <th>Start-up Time</th>
-                    <th>Power-down Time</th>
-                    <th>Days</th>
-                    <th>Action</th>
-                </tr>
-                {% autoescape false %}
-                {{ scheduleTable }}
-                {% endautoescape %}
-            </table>
+            {{ updateMessage }}
         </p>
     </div>
     <div class="footer">
